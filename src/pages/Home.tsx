@@ -73,25 +73,34 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative gradient-hero text-primary-foreground py-20 overflow-hidden">
+      <section className="relative gradient-hero text-primary-foreground py-32 md:py-40 lg:py-48 min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Floating Circles */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-primary-foreground/10 rounded-full animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-primary-foreground/20 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-primary-foreground/5 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-primary-foreground/15 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 md:mb-12 leading-tight">
               India's Premier Institution for
               <span className="block text-transparent bg-gradient-to-r from-white to-blue-200 bg-clip-text">
                 Extraordinary Professionals
               </span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl lg:text-3xl mb-12 md:mb-16 text-blue-100 max-w-5xl mx-auto leading-relaxed">
               Initiate, enable and empower individuals to grow up to be extraordinary professionals 
               through world-class education and industry-relevant training.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-                Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button variant="hero" size="lg" className="text-xl px-10 py-6 h-auto">
+                Start Your Journey <ArrowRight className="ml-2 w-6 h-6" />
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">
+              <Button variant="outline" size="lg" className="text-xl px-10 py-6 h-auto bg-white/10 border-white/30 text-white hover:bg-white/20">
                 Explore Courses
               </Button>
             </div>
