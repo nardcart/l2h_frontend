@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Courses from "./pages/Courses";
 import Blogs from "./pages/Blogs";
 import SuccessStories from "./pages/SuccessStories";
+import Jobs from "./pages/Jobs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,7 +29,7 @@ const App = () => (
           <Route path="/success-stories" element={<SuccessStories />} />
           {/* Placeholder routes for remaining pages */}
           <Route path="/ebooks" element={<div className="pt-16 p-8 text-center"><h1 className="text-4xl font-bold">Ebooks - Coming Soon</h1></div>} />
-          <Route path="/jobs" element={<div className="pt-16 p-8 text-center"><h1 className="text-4xl font-bold">Jobs - Coming Soon</h1></div>} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/partnerships" element={<div className="pt-16 p-8 text-center"><h1 className="text-4xl font-bold">Partnerships - Coming Soon</h1></div>} />
           <Route path="/courses/:category" element={<Courses />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
