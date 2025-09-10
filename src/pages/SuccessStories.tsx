@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Footer from '@/components/Footer';
 import { 
   Star,
   Quote,
@@ -265,6 +266,8 @@ const SuccessStories = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
