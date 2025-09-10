@@ -75,7 +75,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
+      <section className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-purple-900 text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-black/30"></div>
         
         {/* Subtle Background Pattern */}
