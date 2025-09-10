@@ -17,10 +17,11 @@ import {
 
 const Home = () => {
   const stats = [
-    { icon: Users, label: "Students Trained", value: "50,000+" },
-    { icon: BookOpen, label: "Courses Available", value: "200+" },
-    { icon: Award, label: "Success Rate", value: "95%" },
-    { icon: Globe, label: "Countries Reached", value: "25+" },
+    { icon: Star, label: "Over rating", value: "400K+" },
+    { icon: BookOpen, label: "Hours of content", value: "1000+" },
+    { icon: Users, label: "Student trained", value: "100K+" },
+    { icon: TrendingUp, label: "Salary Hike", value: "150%" },
+    { icon: Award, label: "Hiring Partners", value: "100+" },
   ];
 
   const courses = [
@@ -74,57 +75,58 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative gradient-hero text-primary-foreground py-32 md:py-40 lg:py-48 min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
+        <div className="absolute inset-0 bg-black/30"></div>
         
-        {/* Floating Circles */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-primary-foreground/10 rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-primary-foreground/20 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-primary-foreground/5 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-primary-foreground/15 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="text-center animate-fade-in">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 md:mb-12 leading-tight">
-              India's Premier Institution for
-              <span className="block text-transparent bg-gradient-to-r from-white to-blue-200 bg-clip-text">
-                Extraordinary Professionals
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl mb-12 md:mb-16 text-blue-100 max-w-5xl mx-auto leading-relaxed">
-              Initiate, enable and empower individuals to grow up to be extraordinary professionals 
-              through world-class education and industry-relevant training.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button variant="hero" size="lg" className="text-xl px-10 py-6 h-auto">
-                Start Your Journey <ArrowRight className="ml-2 w-6 h-6" />
-              </Button>
-              <Button variant="outline" size="lg" className="text-xl px-10 py-6 h-auto bg-white/10 border-white/30 text-white hover:bg-white/20">
-                Explore Courses
-              </Button>
-            </div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-8">
+            <Star className="w-4 h-4 mr-2 fill-yellow-400 text-yellow-400" />
+            India's #1
           </div>
+          
+          {/* Main Headline */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            Master In-Demand
+            <span className="block text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
+              Tech Skills 3X Faster
+            </span>
+          </h1>
+          
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            A certificate won't stop your code from crashing—learn to write 
+            <br className="hidden md:block" />
+            sh*t that works instead.
+          </p>
+          
+          {/* CTA Button */}
+          <Button 
+            size="lg" 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg"
+          >
+            Get Started <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
         </div>
-        
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full animate-float"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 bg-blue-400/20 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-purple-400/20 rounded-full animate-float" style={{animationDelay: '4s'}}></div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <section className="py-16 bg-slate-800/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center animate-slide-up" style={{animationDelay: `${index * 0.1}s`}}>
-                <div className="inline-flex items-center justify-center w-16 h-16 gradient-primary rounded-full mb-4">
-                  <stat.icon className="w-8 h-8 text-primary-foreground" />
+              <div key={index} className="bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 text-center hover:bg-slate-700/80 transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600/20 rounded-lg mb-3">
+                  <stat.icon className="w-6 h-6 text-blue-400" />
                 </div>
-                <div className="text-3xl font-bold text-primary mb-2">{stat.value}</div>
-                <div className="text-muted-foreground">{stat.label}</div>
+                <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                <div className="text-gray-400 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
