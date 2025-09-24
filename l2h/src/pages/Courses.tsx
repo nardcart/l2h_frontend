@@ -265,9 +265,9 @@ const Courses = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button 
                     className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl"
-                    onClick={() => window.open('https://l2h.akamai.net.in/new-courses', '_blank')}
+                    onClick={() => window.open('https://l2h.akamai.net.in/my-zone-full', '_blank')}
                   >
-                    Browse Courses
+                    Get Started
                   </Button>
                   <Button 
                     variant="outline" 
