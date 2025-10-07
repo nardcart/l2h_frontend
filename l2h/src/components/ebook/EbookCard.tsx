@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Download, Eye, FileText } from 'lucide-react';
 import type { Ebook } from '@/types/ebook';
+import { API_BASE_URL } from '@/config/api';
 
 interface EbookCardProps {
   ebook: Ebook;
@@ -10,9 +11,10 @@ interface EbookCardProps {
 }
 
 export default function EbookCard({ ebook, onDownloadClick }: EbookCardProps) {
+  const apiBaseUrl = API_BASE_URL?.replace('/api', '') || API_BASE_URL;
   const imageUrl = ebook.image.startsWith('http')
     ? ebook.image
-    : `${import.meta.env.VITE_API_URL}/uploads/ebook/${ebook.image}`;
+    : `${apiBaseUrl}/uploads/ebook/${ebook.image}`;
 
   return (
     <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-200 group bg-white/90 backdrop-blur-sm">

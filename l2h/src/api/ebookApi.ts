@@ -12,8 +12,10 @@ import type {
   BulkSendResponse,
   SingleSendRequest,
 } from '@/types/ebook';
+import { API_BASE_URL as CONFIG_API_BASE_URL } from '@/config/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Remove /api suffix if present in the base URL
+const API_BASE_URL = CONFIG_API_BASE_URL?.replace('/api', '') || CONFIG_API_BASE_URL;
 
 const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api/ebooks`,

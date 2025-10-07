@@ -3,8 +3,8 @@
  * Centralized API endpoints and configuration
  */
 
-// Get API base URL from environment variable or use default
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+// Get API base URL from environment variable
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 /**
  * API Endpoints

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ebookApi } from '@/api/ebookApi';
 import type { Ebook } from '@/types/ebook';
+import { API_BASE_URL } from '@/config/api';
 import {
   Table,
   TableBody,
@@ -231,8 +232,7 @@ export default function EbookManagement() {
       formData.append('file', file);
 
       const token = localStorage.getItem('token');
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/admin/ebooks/upload/image`, {
+      const response = await fetch(`${API_BASE_URL}/admin/ebooks/upload/image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -267,8 +267,7 @@ export default function EbookManagement() {
       formData.append('file', file);
 
       const token = localStorage.getItem('token');
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/admin/ebooks/upload/pdf`, {
+      const response = await fetch(`${API_BASE_URL}/admin/ebooks/upload/pdf`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
