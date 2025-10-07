@@ -1,1 +1,0 @@
-https://l2h.akamai.net.in/my-zone-full

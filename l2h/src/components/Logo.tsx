@@ -57,3 +57,5 @@ const Logo = ({ config = logoConfig, linkTo = '/' }: LogoProps) => {
 };
 
 export default Logo;
+
+

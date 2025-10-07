@@ -77,3 +77,5 @@ You can customize the appearance using Tailwind CSS classes in the configuration
 - Keep image logos under 200KB for best performance  
 - Use SVG format for crisp logos at all sizes
 - Test your logo on both light and dark backgrounds
+
+

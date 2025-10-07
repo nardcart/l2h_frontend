@@ -140,6 +140,14 @@ const Navigation = () => {
               Success Stories
             </Link>
 
+            <Link
+              to="/jobs"
+              className={`font-medium transition-smooth ${
+                isActive('/jobs') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Jobs
+            </Link>
 
             <Link
               to="/partnerships"
@@ -153,8 +161,12 @@ const Navigation = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="hero" size="lg">
-              Get Started
+            <Button 
+              variant="hero" 
+              size="lg"
+              onClick={() => window.open('https://l2h.akamai.net.in/new-courses', '_blank')}
+            >
+              Try Free Courses
             </Button>
           </div>
 
@@ -186,11 +198,22 @@ const Navigation = () => {
               <Link to="/success-stories" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Success Stories
               </Link>
+              <Link to="/jobs" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
+                Jobs
+              </Link>
               <Link to="/partnerships" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Partnerships
               </Link>
-              <Button variant="hero" size="lg" className="mt-4">
-                Get Started
+              <Button 
+                variant="hero" 
+                size="lg" 
+                className="mt-4"
+                onClick={() => {
+                  window.open('https://l2h.akamai.net.in/new-courses', '_blank');
+                  setIsMenuOpen(false);
+                }}
+              >
+                Try Free Courses
               </Button>
             </div>
           </div>

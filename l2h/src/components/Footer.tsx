@@ -1,3 +1,5 @@
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
+
 const Footer = () => {
   return (
     <footer className="bg-background border-t">
@@ -9,19 +11,43 @@ const Footer = () => {
             <p className="text-muted-foreground mb-4">
               India's Premier Institution for Extraordinary Professionals
             </p>
-            <div className="flex space-x-4">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <span className="text-primary font-bold">f</span>
-              </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <span className="text-primary font-bold">t</span>
-              </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <span className="text-primary font-bold">in</span>
-              </div>
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer">
-                <span className="text-primary font-bold">yt</span>
-              </div>
+            <div className="flex space-x-3">
+              <a 
+                href="https://www.facebook.com/profile.php?id=61580610657298" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer group"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+              </a>
+              <a 
+                href="https://www.instagram.com/low2high_/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer group"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+              </a>
+              <a 
+                href="https://www.linkedin.com/company/81814645/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer group"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+              </a>
+              <a 
+                href="https://www.youtube.com/@Low2High" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center hover:bg-primary/20 transition-colors cursor-pointer group"
+                aria-label="YouTube"
+              >
+                <Youtube className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+              </a>
             </div>
           </div>
 
@@ -70,12 +96,12 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-muted-foreground text-sm mb-4 md:mb-0">
-            © 2024 L2H Education. All rights reserved.
+            © {new Date().getFullYear()} L2H Education. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms & Conditions</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Refunds & Cancellation</a>
+            <a href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="/quality-policy" className="text-muted-foreground hover:text-primary transition-colors">Quality Policy</a>
+            <a href="/refunds-cancellation" className="text-muted-foreground hover:text-primary transition-colors">Refunds & Cancellation</a>
           </div>
         </div>
       </div>

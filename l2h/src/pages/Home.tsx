@@ -14,16 +14,19 @@ import {
   BookOpen, 
   Users, 
   Award, 
-  Star, 
   TrendingUp,
   Globe,
   Mail,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Home as HomeIcon
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   // Carousel API state management
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,6 +38,9 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   
+  // Email state for CTA section
+  const [email, setEmail] = useState('');
+  
   const heroSlides = [
     {
       id: 1,
@@ -45,27 +51,13 @@ const Home = () => {
         { number: "85%", text: "Report career success" }
       ],
       buttons: [
-        { text: "Explore Programs", style: "primary" },
-        { text: "Try Simplilearn for Business", style: "outline" }
+        { text: "Explore Programs", style: "primary", url: "/courses", isExternal: false },
+        { text: "Try L2H by Login", style: "outline", url: "https://l2h.akamai.net.in/my-zone-full", isExternal: true }
       ],
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&auto=format"
+      image: "/images/1.jpg"
     },
     {
       id: 2,
-      title: "Unlock Unlimited Live Classes for Your Workforce",
-      stats: [
-        { number: "700+", text: "Live classes monthly" },
-        { number: "550+", text: "Learning solutions" },
-        { number: "100+", text: "Hands-on projects with labs" }
-      ],
-      buttons: [
-        { text: "Explore Learning Hub+", style: "primary" },
-        { text: "Contact Sales", style: "outline" }
-      ],
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&auto=format"
-    },
-    {
-      id: 3,
       title: "Master In-Demand Skills with Expert Training",
       stats: [
         { number: "2,000+", text: "Industry experts" },
@@ -73,10 +65,24 @@ const Home = () => {
         { number: "92%", text: "Job placement rate" }
       ],
       buttons: [
-        { text: "Browse Courses", style: "primary" },
-        { text: "Free Demo Class", style: "outline" }
+        { text: "Browse Courses", style: "primary", url: "/courses", isExternal: false },
+        { text: "Free Demo Class", style: "outline", url: "https://l2h.akamai.net.in/test-series", isExternal: true }
       ],
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop&auto=format"
+      image: "/images/3.jpg"
+    },
+    {
+      id: 3,
+      title: "Transform Your Skills, Transform Your Life",
+      stats: [
+        { number: "50,000+", text: "Students enrolled" },
+        { number: "₹99", text: "Starting price for live courses" },
+        { number: "100%", text: "Practical learning approach" }
+      ],
+      buttons: [
+        { text: "Get Started Now", style: "primary", url: "https://l2h.akamai.net.in/my-zone-full", isExternal: true },
+        { text: "View Success Stories", style: "outline", url: "/success-stories", isExternal: false }
+      ],
+      image: "/images/4.jpg"
     }
   ];
 
@@ -276,27 +282,6 @@ const Home = () => {
 
 
 
-  const testimonials = [
-    {
-      name: "Priya Sharma",
-      role: "Software Engineer at TCS",
-      content: "L2H transformed my career. The courses are practical and industry-focused.",
-      rating: 5
-    },
-    {
-      name: "Rajesh Kumar",
-      role: "Project Manager at Infosys",
-      content: "The leadership training helped me advance to a senior management role.",
-      rating: 5
-    },
-    {
-      name: "Anita Patel",
-      role: "Data Scientist at Wipro",
-      content: "Excellent instructors and comprehensive curriculum. Highly recommended!",
-      rating: 5
-    }
-  ];
-
   return (
     <div className="min-h-screen">
       {/* COMMENTED OUT - Original Hero Section */}
@@ -353,6 +338,13 @@ const Home = () => {
                                     : "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200"
                                 }
                                 variant={button.style === 'primary' ? 'default' : 'outline'}
+                                onClick={() => {
+                                  if (button.isExternal) {
+                                    window.open(button.url, '_blank');
+                                  } else {
+                                    navigate(button.url);
+                                  }
+                                }}
                               >
                                 {button.text}
                               </Button>
@@ -571,64 +563,196 @@ const Home = () => {
         </div>
       </section>
 
-
-
-
-
-
-
-      {/* Success Stories */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 relative">
-        {/* Gradient overlay for lighter effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-white/20"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Hear from professionals who transformed their careers with L2H
+      {/* Success Story Video Section */}
+      <section className="py-20 bg-white relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Hear from Simplilearn Alumni at Top Companies
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover how our learners transformed their careers and landed jobs at leading organizations
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white/95 backdrop-blur-sm shadow-xl border border-white/50">
-                <CardContent className="p-6">
-                  <div className="flex mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-4 italic">"{testimonial.content}"</p>
-                  <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          
+          <div className="max-w-5xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ paddingBottom: '56.25%', height: 0 }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/Dfhb1Mtt_ok"
+                title="Success Story - Simplilearn Alumni"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            
+            {/* Optional: Add description or call to action below video */}
+            <div className="mt-8 text-center">
+              <p className="text-lg text-gray-600 mb-6">
+                Join thousands of professionals who have successfully transitioned to their dream careers
+              </p>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                Start Your Journey Today
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-20 bg-gradient-to-br from-[#3b82f6] via-[#2563eb] to-[#1d4ed8] relative text-white">
-        {/* Gradient overlay for lighter effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-white/10"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <Mail className="w-16 h-16 mx-auto mb-6" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-xl mb-8 text-blue-100">
-            Get the latest updates on new courses, industry insights, and success stories
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-            <Input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="bg-white/10 border-white/30 text-white placeholder:text-white/70"
-            />
-            <Button variant="secondary" size="lg" className="bg-white text-primary hover:bg-white/90">
-              Subscribe
-            </Button>
+      {/* Success Stories */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Real stories from our community
+            </p>
+          </div>
+
+          {/* Masonry Bento Grid for Images */}
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            {/* Image 1 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/5.png"
+                    alt="Success Story Testimonial"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image 2 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/6.png"
+                    alt="Success Story Review"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image 3 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/7.png"
+                    alt="Success Story Feedback"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image 4 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/8.png"
+                    alt="Success Story Certificate"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image 5 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/9.png"
+                    alt="Success Story Testimonial"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image 6 */}
+            <div className="break-inside-avoid mb-6">
+              <div className="rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white border border-gray-200">
+                <div className="p-6">
+                  <img
+                    src="/images/10.png"
+                    alt="Success Story Achievement"
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY US Section */}
+      <section className="py-20 bg-gradient-to-br from-white via-blue-50 to-purple-50 relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-white/20"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">WHY US</h2>
+            <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
+              The most affordable and flexible way to learn for real-world success. Start your journey today with live courses from just <span className="font-bold text-blue-600">₹99</span> — because your growth should never be limited by cost.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Learning by Doing Approach",
+                description: "Learn by doing is like solving real-life problems and achieving success in everyday life.",
+              },
+              {
+                title: "Learn from the best",
+                description: "L2H coined the concept of easy/affordable programs and has helped many students to learn directly from industry experts.",
+              },
+              {
+                title: "Become an instructor",
+                description: "Instructors from all over India teach thousands of students on L2H Platform. We provide the tools and skills to teach what you love.",
+              },
+              {
+                title: "Active, hands-on learning",
+                description: "Every session or workshop is meticulously designed to assist you in applying what you have learned and pave the way for a prosperous career.",
+              },
+              {
+                title: "Easily Affordable",
+                description: "L2H caters primarily to individuals who face financial constraints preventing them from investing in costly courses, which subsequently hinders their ability to live a happy life.",
+              },
+              {
+                title: "Learn anything and Everything",
+                description: "What makes L2H remarkable is the extensive range of programs it offers. It goes beyond traditional educational options and encompasses a diverse array of skill-based programs that are not typically taught in schools or colleges.",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="h-full"
+              >
+                <Card className="border-dashed border-2 border-blue-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 h-full bg-white/80 backdrop-blur-sm">
+                  <CardContent className="flex flex-col items-center text-center p-6 space-y-4">
+                    <div className="bg-blue-100 p-4 rounded-full">
+                      <HomeIcon className="text-blue-600 w-8 h-8" />
+                    </div>
+                    <h3 className="font-semibold text-lg text-gray-800">{feature.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -640,63 +764,26 @@ const Home = () => {
           <p className="text-xl text-muted-foreground mb-8">
             Join thousands of professionals who have already started their journey to excellence
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
+            <Input
+              type="email"
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="text-lg px-6 py-6 h-auto"
+            />
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="text-lg px-8 py-6 whitespace-nowrap"
+              onClick={() => window.open('https://l2h.akamai.net.in/my-zone-full', '_blank')}
+            >
               Start Learning Today <TrendingUp className="ml-2 w-5 h-5" />
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-              Contact Us
-            </Button>
           </div>
         </div>
       </section>
 
-      {/* Explore the CodeDamn Way Section */}
-      <section className="py-24 bg-gradient-to-br from-white via-gray-50 to-blue-50 relative overflow-hidden">
-        {/* Gradient overlay for lighter effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-white/30"></div>
-        {/* Background geometric elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-blue-50 rounded-2xl opacity-60 float-slow" style={{'--rotate': '12deg'} as React.CSSProperties}></div>
-          <div className="absolute top-20 right-10 w-32 h-32 bg-purple-50 rounded-xl opacity-40 float-reverse" style={{'--rotate': '-12deg'} as React.CSSProperties}></div>
-          <div className="absolute bottom-32 left-20 w-36 h-36 bg-indigo-50 rounded-2xl opacity-50 float-delayed" style={{'--rotate': '45deg'} as React.CSSProperties}></div>
-          <div className="absolute bottom-20 right-20 w-28 h-28 bg-violet-50 rounded-lg opacity-30 float-slow" style={{'--rotate': '-6deg'} as React.CSSProperties}></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-blue-100 rounded-xl opacity-20 float-reverse" style={{'--rotate': '12deg'} as React.CSSProperties}></div>
-          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-indigo-100 rounded-2xl opacity-15 float-delayed" style={{'--rotate': '45deg'} as React.CSSProperties}></div>
-          <div className="absolute top-2/3 left-1/2 w-16 h-16 bg-purple-100 rounded-lg opacity-25 float-fast" style={{'--rotate': '-30deg'} as React.CSSProperties}></div>
-          <div className="absolute bottom-1/3 right-1/4 w-22 h-22 bg-violet-100 rounded-xl opacity-20 float-very-slow" style={{'--rotate': '60deg'} as React.CSSProperties}></div>
-        </div>
-
-        {/* Content with fade blend effect */}
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-20">
-          <div className="relative bg-white/95 backdrop-blur-sm border border-white/50 rounded-3xl p-12 shadow-xl">
-            <p className="text-sm text-gray-500 uppercase tracking-wide font-medium mb-8">
-              EXPLORE THE CODEDAMN WAY
-            </p>
-            
-            <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-600 text-white rounded-full text-lg font-bold mb-6 shadow-lg">
-                1
-              </div>
-              <h3 className="text-2xl font-bold text-indigo-600 mb-4">LEARN</h3>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Instantly and Interactively
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-                Learn from carefully curated learning paths with up-to-date interactive courses, and 
-                receive 24x7 AI assistance as you develop your coding skills.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Top fade blend effect */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent pointer-events-none z-5"></div>
-        {/* Bottom fade blend effect */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-white pointer-events-none z-5"></div>
-      </section>
-
-     
 
       {/* Footer */}
       <Footer />

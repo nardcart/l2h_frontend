@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,86 +11,158 @@ import {
   User, 
   ArrowRight,
   BookOpen,
-  TrendingUp,
-  Users,
-  Code
+  Loader2
 } from 'lucide-react';
+import { API_ENDPOINTS, API_BASE_URL } from '@/config/api';
+import { toast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  coverImage: string;
+  excerpt: string;
+  tags: string[];
+  isVideo: boolean;
+  videoType?: 'file' | 'embed';
+  videoUrl?: string;
+  status: string;
+  publishedAt: string;
+  viewCount: number;
+  categoryId: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+  authorId: {
+    _id: string;
+    name: string;
+    email: string;
+    image?: string;
+  };
+}
+
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  postCount: number;
+}
 
 const Blogs = () => {
-  const categories = [
-    { name: 'All', count: 24 },
-    { name: 'Career Growth', count: 8 },
-    { name: 'Industry Trends', count: 6 },
-    { name: 'Learning Tips', count: 5 },
-    { name: 'Success Stories', count: 5 }
-  ];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.get('category') || 'all');
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    pages: 0
+  });
 
-  const featuredPost = {
-    title: "The Future of Professional Development in 2024",
-    excerpt: "Explore how emerging technologies and changing work dynamics are reshaping professional development strategies.",
-    author: "Dr. Priya Sharma",
-    date: "Dec 15, 2023",
-    readTime: "8 min read",
-    category: "Industry Trends",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.CATEGORIES}`);
+        const result = await response.json();
+        
+        if (result.status && result.data) {
+          setCategories(result.data);
+        }
+      } catch (error: any) {
+        console.error('Error fetching categories:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load categories',
+          variant: 'destructive'
+        });
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Fetch blogs
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          status: 'published',
+          page: pagination.page.toString(),
+          limit: pagination.limit.toString(),
+          sort: '-publishedAt'
+        });
+
+        if (selectedCategory && selectedCategory !== 'all') {
+          params.append('category', selectedCategory);
+        }
+
+        if (searchTerm) {
+          params.append('search', searchTerm);
+        }
+
+        // The API service returns the data directly, not the full response
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.BLOGS}?${params.toString()}`);
+        const result = await response.json();
+        
+        if (result.status && result.data) {
+          setBlogs(result.data);
+          if (result.pagination) {
+            setPagination(result.pagination);
+          }
+        }
+      } catch (error: any) {
+        console.error('Error fetching blogs:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load blogs',
+          variant: 'destructive'
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [selectedCategory, searchTerm, pagination.page]);
+
+  // Calculate read time from content
+  const calculateReadTime = (description: string) => {
+    const wordsPerMinute = 200;
+    const wordCount = description.split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return `${minutes} min read`;
   };
 
-  const blogPosts = [
-    {
-      title: "5 Essential Skills Every Professional Needs in 2024",
-      excerpt: "Discover the must-have skills that will set you apart in today's competitive job market.",
-      author: "Rajesh Kumar",
-      date: "Dec 12, 2023",
-      readTime: "6 min read",
-      category: "Career Growth",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
-    },
-    {
-      title: "How to Build a Learning Habit That Sticks",
-      excerpt: "Practical strategies to develop consistent learning habits that accelerate your professional growth.",
-      author: "Anita Patel",
-      date: "Dec 10, 2023",
-      readTime: "5 min read",
-      category: "Learning Tips",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop"
-    },
-    {
-      title: "From Intern to Team Lead: A Success Story",
-      excerpt: "Follow Sarah's journey from a fresh graduate to a successful team lead at a Fortune 500 company.",
-      author: "Success Team",
-      date: "Dec 8, 2023",
-      readTime: "7 min read",
-      category: "Success Stories",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=250&fit=crop"
-    },
-    {
-      title: "The Rise of Remote Leadership",
-      excerpt: "How leaders are adapting their management styles for the remote and hybrid work environment.",
-      author: "Vikram Joshi",
-      date: "Dec 5, 2023",
-      readTime: "6 min read",
-      category: "Industry Trends",
-      image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=400&h=250&fit=crop"
-    },
-    {
-      title: "Effective Communication in Virtual Teams",
-      excerpt: "Best practices for maintaining clear communication and strong relationships in virtual teams.",
-      author: "Neha Gupta",
-      date: "Dec 3, 2023",
-      readTime: "5 min read",
-      category: "Learning Tips",
-      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=250&fit=crop"
-    },
-    {
-      title: "Data-Driven Decision Making in Modern Business",
-      excerpt: "Learn how professionals are leveraging data analytics to make informed business decisions.",
-      author: "Amit Singh",
-      date: "Dec 1, 2023",
-      readTime: "8 min read",
-      category: "Industry Trends",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop"
+  // Handle category filter
+  const handleCategoryChange = (categorySlug: string) => {
+    setSelectedCategory(categorySlug);
+    setPagination(prev => ({ ...prev, page: 1 }));
+    if (categorySlug !== 'all') {
+      setSearchParams({ category: categorySlug });
+    } else {
+      setSearchParams({});
     }
-  ];
+  };
+
+  // Handle search
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPagination(prev => ({ ...prev, page: 1 }));
+  };
+
+  // Get total blogs count
+  const totalBlogsCount = categories.reduce((sum, cat) => sum + cat.postCount, 0);
+
+  // Get featured blog (first blog)
+  const featuredPost = blogs[0];
+  const blogPosts = blogs.slice(1);
 
   return (
     <div className="min-h-screen pt-16">
@@ -179,21 +253,35 @@ const Blogs = () => {
                 type="text"
                 placeholder="Search articles..."
                 className="pl-10"
+                value={searchTerm}
+                onChange={handleSearch}
               />
             </div>
 
             {/* Categories */}
             <div className="flex flex-wrap gap-2">
+              <Button
+                variant={selectedCategory === 'all' ? 'default' : 'outline'}
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={() => handleCategoryChange('all')}
+              >
+                All
+                <span className="bg-muted px-2 py-0.5 rounded-full text-xs">
+                  {totalBlogsCount}
+                </span>
+              </Button>
               {categories.map((category) => (
                 <Button
-                  key={category.name}
-                  variant="outline"
+                  key={category._id}
+                  variant={selectedCategory === category.slug ? 'default' : 'outline'}
                   size="sm"
                   className="flex items-center gap-2"
+                  onClick={() => handleCategoryChange(category.slug)}
                 >
                   {category.name}
                   <span className="bg-muted px-2 py-0.5 rounded-full text-xs">
-                    {category.count}
+                    {category.postCount}
                   </span>
                 </Button>
               ))}
@@ -203,49 +291,65 @@ const Blogs = () => {
       </section>
 
       {/* Featured Post */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-2">Featured Article</h2>
-            <p className="text-muted-foreground">Don't miss our latest insights</p>
+      {loading ? (
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center items-center h-64">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
-
-          <Card className="overflow-hidden shadow-card hover-lift">
-            <div className="grid lg:grid-cols-2 gap-0">
-              <div className="aspect-[4/3] lg:aspect-auto overflow-hidden">
-                <img 
-                  src={featuredPost.image} 
-                  alt={featuredPost.title}
-                  className="w-full h-full object-cover hover-scale"
-                />
-              </div>
-              <div className="p-8 lg:p-12">
-                <Badge className="mb-4">{featuredPost.category}</Badge>
-                <h3 className="text-2xl lg:text-3xl font-bold mb-4 leading-tight">
-                  {featuredPost.title}
-                </h3>
-                <p className="text-muted-foreground mb-6 text-lg">
-                  {featuredPost.excerpt}
-                </p>
-                <div className="flex items-center gap-4 mb-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <User className="w-4 h-4" />
-                    <span>{featuredPost.author}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{featuredPost.date}</span>
-                  </div>
-                  <span>{featuredPost.readTime}</span>
-                </div>
-                <Button variant="gradient" size="lg">
-                  Read Article <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </div>
+        </section>
+      ) : featuredPost ? (
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold mb-2">Featured Article</h2>
+              <p className="text-muted-foreground">Don't miss our latest insights</p>
             </div>
-          </Card>
-        </div>
-      </section>
+
+            <Card className="overflow-hidden shadow-card hover-lift">
+              <div className="grid lg:grid-cols-2 gap-0">
+                <div className="aspect-[4/3] lg:aspect-auto overflow-hidden">
+                  <img 
+                    src={featuredPost.coverImage} 
+                    alt={featuredPost.title}
+                    className="w-full h-full object-cover hover-scale"
+                  />
+                </div>
+                <div className="p-8 lg:p-12">
+                  <Badge className="mb-4">{featuredPost.categoryId.name}</Badge>
+                  <Link to={`/blogs/${featuredPost.slug}`}>
+                    <h3 className="text-2xl lg:text-3xl font-bold mb-4 leading-tight hover:text-primary transition-colors">
+                      {featuredPost.title}
+                    </h3>
+                  </Link>
+                  <p className="text-muted-foreground mb-6 text-lg">
+                    {featuredPost.excerpt}
+                  </p>
+                  <div className="flex items-center gap-4 mb-6 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <User className="w-4 h-4" />
+                      <span>{featuredPost.authorId.name}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>
+                        {featuredPost.publishedAt 
+                          ? format(new Date(featuredPost.publishedAt), 'MMM dd, yyyy')
+                          : format(new Date(featuredPost.createdAt), 'MMM dd, yyyy')}
+                      </span>
+                    </div>
+                    <span>{calculateReadTime(featuredPost.description)}</span>
+                  </div>
+                  <Link to={`/blogs/${featuredPost.slug}`}>
+                    <Button variant="gradient" size="lg">
+                      Read Article <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </section>
+      ) : null}
 
       {/* Blog Grid */}
       <section className="py-20">
@@ -255,52 +359,80 @@ const Blogs = () => {
             <p className="text-muted-foreground">Stay updated with our latest insights and tips</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <Card key={index} className="hover-lift shadow-card overflow-hidden">
-                <div className="aspect-video overflow-hidden">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover hover-scale"
-                  />
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : blogPosts.length > 0 ? (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogPosts.map((post) => (
+                  <Card key={post._id} className="hover-lift shadow-card overflow-hidden">
+                    <Link to={`/blogs/${post.slug}`}>
+                      <div className="aspect-video overflow-hidden">
+                        <img 
+                          src={post.coverImage} 
+                          alt={post.title}
+                          className="w-full h-full object-cover hover-scale"
+                        />
+                      </div>
+                    </Link>
+                    
+                    <CardHeader>
+                      <Badge variant="secondary" className="w-fit mb-2">{post.categoryId.name}</Badge>
+                      <Link to={`/blogs/${post.slug}`}>
+                        <CardTitle className="text-xl line-clamp-2 leading-tight hover:text-primary transition-colors">
+                          {post.title}
+                        </CardTitle>
+                      </Link>
+                      <CardDescription className="line-clamp-3">
+                        {post.excerpt}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          <span>{post.authorId.name}</span>
+                        </div>
+                        <span>{calculateReadTime(post.description)}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          {post.publishedAt 
+                            ? format(new Date(post.publishedAt), 'MMM dd, yyyy')
+                            : format(new Date(post.createdAt), 'MMM dd, yyyy')}
+                        </span>
+                        <Link to={`/blogs/${post.slug}`}>
+                          <Button variant="ghost" size="sm">
+                            Read More <ArrowRight className="ml-1 w-4 h-4" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Load More */}
+              {pagination.page < pagination.pages && (
+                <div className="text-center mt-12">
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                  >
+                    Load More Articles
+                  </Button>
                 </div>
-                
-                <CardHeader>
-                  <Badge variant="secondary" className="w-fit mb-2">{post.category}</Badge>
-                  <CardTitle className="text-xl line-clamp-2 leading-tight">
-                    {post.title}
-                  </CardTitle>
-                  <CardDescription className="line-clamp-3">
-                    {post.excerpt}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
-                      <User className="w-4 h-4" />
-                      <span>{post.author}</span>
-                    </div>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">{post.date}</span>
-                    <Button variant="ghost" size="sm">
-                      Read More <ArrowRight className="ml-1 w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Load More */}
-          <div className="text-center mt-12">
-            <Button variant="outline" size="lg">
-              Load More Articles
-            </Button>
-          </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground text-lg">No blogs found. Try adjusting your filters.</p>
+            </div>
+          )}
         </div>
       </section>
 

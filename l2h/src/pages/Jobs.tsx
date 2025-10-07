@@ -1,414 +1,153 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 import Footer from '@/components/Footer';
-import { MapPin, Clock, Briefcase, Users, Search, Building2, ArrowRight, Star } from 'lucide-react';
+import { 
+  Briefcase,
+  Users,
+  Target,
+  TrendingUp,
+  ExternalLink
+} from 'lucide-react';
 
 const Jobs = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedLocation, setSelectedLocation] = useState('all');
-
-  const jobCategories = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'technology', label: 'Technology' },
-    { value: 'marketing', label: 'Marketing' },
-    { value: 'sales', label: 'Sales' },
-    { value: 'finance', label: 'Finance' },
-    { value: 'operations', label: 'Operations' },
-    { value: 'design', label: 'Design' },
-  ];
-
-  const locations = [
-    { value: 'all', label: 'All Locations' },
-    { value: 'bangalore', label: 'Bangalore' },
-    { value: 'mumbai', label: 'Mumbai' },
-    { value: 'delhi', label: 'Delhi' },
-    { value: 'hyderabad', label: 'Hyderabad' },
-    { value: 'pune', label: 'Pune' },
-    { value: 'remote', label: 'Remote' },
-  ];
-
-  const jobListings = [
-    {
-      id: 1,
-      title: 'Senior Frontend Developer',
-      company: 'TechCorp Solutions',
-      location: 'Bangalore',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '₹8-15 LPA',
-      category: 'technology',
-      skills: ['React', 'JavaScript', 'TypeScript', 'Tailwind CSS'],
-      posted: '2 days ago',
-      applications: 45,
-      logo: '🚀'
-    },
-    {
-      id: 2,
-      title: 'Digital Marketing Manager',
-      company: 'Growth Labs',
-      location: 'Mumbai',
-      type: 'Full-time',
-      experience: '2-4 years',
-      salary: '₹6-12 LPA',
-      category: 'marketing',
-      skills: ['SEO', 'Google Ads', 'Analytics', 'Content Strategy'],
-      posted: '1 day ago',
-      applications: 32,
-      logo: '📈'
-    },
-    {
-      id: 3,
-      title: 'Product Designer',
-      company: 'Design Studio Pro',
-      location: 'Remote',
-      type: 'Full-time',
-      experience: '1-3 years',
-      salary: '₹5-10 LPA',
-      category: 'design',
-      skills: ['Figma', 'UI/UX', 'Prototyping', 'User Research'],
-      posted: '3 days ago',
-      applications: 28,
-      logo: '🎨'
-    },
-    {
-      id: 4,
-      title: 'Business Analyst',
-      company: 'Analytics Hub',
-      location: 'Delhi',
-      type: 'Full-time',
-      experience: '2-4 years',
-      salary: '₹7-13 LPA',
-      category: 'operations',
-      skills: ['SQL', 'Excel', 'Power BI', 'Data Analysis'],
-      posted: '4 days ago',
-      applications: 38,
-      logo: '📊'
-    },
-    {
-      id: 5,
-      title: 'Sales Executive',
-      company: 'SalesForce India',
-      location: 'Hyderabad',
-      type: 'Full-time',
-      experience: '1-2 years',
-      salary: '₹4-8 LPA',
-      category: 'sales',
-      skills: ['CRM', 'Lead Generation', 'B2B Sales', 'Communication'],
-      posted: '5 days ago',
-      applications: 52,
-      logo: '💼'
-    },
-    {
-      id: 6,
-      title: 'Financial Analyst',
-      company: 'FinTech Solutions',
-      location: 'Pune',
-      type: 'Full-time',
-      experience: '2-3 years',
-      salary: '₹6-11 LPA',
-      category: 'finance',
-      skills: ['Financial Modeling', 'Excel', 'PowerPoint', 'Analysis'],
-      posted: '1 week ago',
-      applications: 25,
-      logo: '💰'
-    },
-  ];
-
-  const hiringPartners = [
-    { name: 'Google', logo: '🔍', positions: 120 },
-    { name: 'Microsoft', logo: '💻', positions: 95 },
-    { name: 'Amazon', logo: '📦', positions: 180 },
-    { name: 'Flipkart', logo: '🛒', positions: 85 },
-    { name: 'Zomato', logo: '🍕', positions: 65 },
-    { name: 'Paytm', logo: '💳', positions: 75 },
-    { name: 'Ola', logo: '🚗', positions: 55 },
-    { name: 'Swiggy', logo: '🍔', positions: 70 },
-  ];
-
-  const filteredJobs = jobListings.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === 'all' || job.category === selectedCategory;
-    const matchesLocation = selectedLocation === 'all' || job.location.toLowerCase() === selectedLocation;
-    
-    return matchesSearch && matchesCategory && matchesLocation;
-  });
-
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="bg-white py-8 relative overflow-hidden">
-        <div className="relative h-[500px] w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-full">
-            <div className="grid lg:grid-cols-2 gap-12 items-center h-full w-full">
-              {/* Left Content */}
-              <div className="space-y-8">
-                <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Your Dream Job Awaits
-                </h1>
-                
-                {/* Feature List */}
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">2,500+</span> Active job openings
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">15,000+</span> Students placed
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">95%</span> Placement success rate
-                    </span>
-                  </div>
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl">
-                    <Briefcase className="w-5 h-5 mr-2" />
-                    Browse Jobs
-                  </Button>
-                  <Button variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200">
-                    <Users className="w-5 h-5 mr-2" />
-                    Post a Job
-                  </Button>
-                </div>
-              </div>
-
-              {/* Right Image */}
-              <div className="relative">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=400&fit=crop&auto=format" 
-                    alt="Your Dream Job Awaits - Professional career opportunities" 
-                    className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
-                  />
-                  {/* Optimized gradient overlays for seamless blending with white background */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/90"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/50 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-white/30"></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/70"></div>
-                </div>
-              </div>
-            </div>
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              India's Only Skilling and Training Marketplace
+            </h1>
           </div>
         </div>
       </section>
 
-      {/* Job Search & Filters */}
-      <section className="py-8 bg-background border-b">
+      {/* What Drives Us Section */}
+      <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <Input
-                placeholder="Search jobs, companies, or skills..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full lg:w-48">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {jobCategories.map((category) => (
-                  <SelectItem key={category.value} value={category.value}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-              <SelectTrigger className="w-full lg:w-48">
-                <SelectValue placeholder="Location" />
-              </SelectTrigger>
-              <SelectContent>
-                {locations.map((location) => (
-                  <SelectItem key={location.value} value={location.value}>
-                    {location.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </section>
-
-      {/* Job Stats */}
-      <section className="py-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="animate-fade-in">
-              <div className="text-3xl font-bold text-primary">2,500+</div>
-              <div className="text-muted-foreground">Active Jobs</div>
-            </div>
-            <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <div className="text-3xl font-bold text-primary">500+</div>
-              <div className="text-muted-foreground">Partner Companies</div>
-            </div>
-            <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="text-3xl font-bold text-primary">15,000+</div>
-              <div className="text-muted-foreground">Students Placed</div>
-            </div>
-            <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="text-3xl font-bold text-primary">95%</div>
-              <div className="text-muted-foreground">Placement Rate</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Job Listings */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Featured Jobs</h2>
-              <p className="text-muted-foreground">Showing {filteredJobs.length} jobs</p>
-            </div>
-          </div>
-
-          <div className="grid gap-6">
-            {filteredJobs.map((job, index) => (
-              <Card key={job.id} className="hover:shadow-card transition-smooth hover-scale group" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-2xl">
-                        {job.logo}
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl group-hover:text-primary transition-smooth">
-                          {job.title}
-                        </CardTitle>
-                        <CardDescription className="text-lg font-medium text-foreground">
-                          {job.company}
-                        </CardDescription>
-                        <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {job.location}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Briefcase className="w-4 h-4" />
-                            {job.type}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {job.posted}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-primary">{job.salary}</div>
-                      <div className="text-sm text-muted-foreground">{job.experience}</div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {job.skills.map((skill) => (
-                      <Badge key={skill} variant="secondary">
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-muted-foreground">
-                      {job.applications} applications
-                    </div>
-                    <Button className="group-hover:bg-primary/90">
-                      Apply Now
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Hiring Partners */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Hiring Partners</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Top companies trust L2H graduates for their talent and expertise
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">What Drives Us</h2>
+          
+          <div className="bg-yellow-100 p-8 rounded-lg">
+            <p className="text-lg leading-relaxed text-gray-800">
+              We believe in empowering individuals through affordable upskilling courses. Our mission is to provide accessible education that enables personal and professional growth, regardless of financial constraints. At low 2 high we understand the importance of continuous learning in an ever-evolving world. That's why we offer a wide range of short-term and long-term upskilling courses designed to enhance your skills and open doors to new opportunities. We firmly believe that education should not be a luxury, but a fundamental right for everyone. That's why we have made it our goal to offer these courses at incredibly low costs, ensuring that financial barriers do not hinder your pursuit of knowledge.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* The Power of Community Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">The Power of Community</h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {hiringPartners.map((partner, index) => (
-              <Card key={partner.name} className="text-center p-6 hover:shadow-card transition-smooth hover-scale group" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="text-4xl mb-3">{partner.logo}</div>
-                <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-smooth">
-                  {partner.name}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {partner.positions} open positions
-                </p>
-              </Card>
-            ))}
+          <div className="bg-yellow-100 p-8 rounded-lg">
+            <p className="text-lg leading-relaxed text-gray-800">
+              We are proud to be the catalyst for positive change in the lives of countless individuals. Our commitment to providing affordable upskilling courses has empowered our students to achieve their goals, secure better job opportunities, and embrace lifelong learning.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 gradient-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center mb-6">
-            <Star className="w-8 h-8 mr-3" />
-            <Star className="w-8 h-8 mr-3" />
-            <Star className="w-8 h-8 mr-3" />
-            <Star className="w-8 h-8 mr-3" />
-            <Star className="w-8 h-8" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Launch Your Career?
+      {/* Biggest Live Skill Training Section */}
+      <section className="py-16 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+            Biggest Live Skill Training Programs at one Place
           </h2>
-          <p className="text-xl mb-8 text-primary-foreground/80">
-            Join thousands of L2H graduates who've landed their dream jobs
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" className="hover-scale">
-              <Building2 className="w-5 h-5 mr-2" />
-              For Employers
-            </Button>
-            <Button variant="outline" size="lg" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
-              <Users className="w-5 h-5 mr-2" />
-              Career Guidance
-            </Button>
+          
+          <div className="bg-yellow-100 p-8 rounded-lg">
+            <p className="text-lg leading-relaxed text-gray-800">
+              When you join L2H, you become part of a community dedicated to personal and professional growth. We provide ongoing support to our students, even after completing a course. We offer career guidance, job placement assistance, and access to a network of industry professionals, ensuring that you have the resources and support to succeed in your chosen field.
+            </p>
           </div>
+
+          {/* Benefits Grid */}
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
+            <Card className="hover:shadow-card transition-smooth">
+              <CardContent className="p-8">
+                <div className="flex items-start space-x-4">
+                  <Briefcase className="w-12 h-12 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Career Guidance</h3>
+                    <p className="text-muted-foreground">
+                      Expert mentors to guide you through your career journey and help you make informed decisions about your professional path.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-card transition-smooth">
+              <CardContent className="p-8">
+                <div className="flex items-start space-x-4">
+                  <Target className="w-12 h-12 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Job Placement Assistance</h3>
+                    <p className="text-muted-foreground">
+                      Direct connections with hiring companies and personalized support to help you land your dream job after course completion.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-card transition-smooth">
+              <CardContent className="p-8">
+                <div className="flex items-start space-x-4">
+                  <Users className="w-12 h-12 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Industry Network</h3>
+                    <p className="text-muted-foreground">
+                      Access to a vibrant community of industry professionals, alumni, and peers to expand your network and opportunities.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-card transition-smooth">
+              <CardContent className="p-8">
+                <div className="flex items-start space-x-4">
+                  <TrendingUp className="w-12 h-12 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Continuous Support</h3>
+                    <p className="text-muted-foreground">
+                      Ongoing assistance even after course completion to ensure your long-term success and career growth.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Interested in Joining L2H */}
+      <section className="py-20 gradient-primary text-primary-foreground">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">
+            Interested in Joining L2H?
+          </h2>
+          <p className="text-xl mb-10 text-primary-foreground/90 max-w-2xl mx-auto">
+            Take the first step towards transforming your career. Join thousands of students who have already started their journey with L2H.
+          </p>
+          <Button 
+            asChild
+            size="lg" 
+            variant="secondary" 
+            className="text-lg px-12 py-6 hover-scale"
+          >
+            <a 
+              href="https://forms.gle/XY6juCo4JXLeBma96" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              Apply Now
+              <ExternalLink className="w-5 h-5" />
+            </a>
+          </Button>
         </div>
       </section>
 
