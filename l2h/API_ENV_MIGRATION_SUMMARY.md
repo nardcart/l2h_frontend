@@ -88,3 +88,4 @@ grep -r "import.meta.env" src/
 - Some components strip the `/api` suffix when needed for accessing static files
 - All API calls now properly use the centralized configuration
 
+

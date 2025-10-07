@@ -232,3 +232,4 @@ After completing all steps:
 - ✅ No 404 errors
 - ✅ Application works on https://l2h-frontend.vercel.app
 
+
