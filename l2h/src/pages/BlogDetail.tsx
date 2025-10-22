@@ -387,7 +387,7 @@ export default function BlogDetail() {
                 {relatedBlogs.map((relatedBlog) => (
                   <Link
                     key={relatedBlog._id}
-                    to={`/blog/${relatedBlog.slug}`}
+                    to={`/blogs/${relatedBlog.slug}`}
                     className="group"
                   >
                     <Card className="h-full hover:shadow-lg transition-shadow">

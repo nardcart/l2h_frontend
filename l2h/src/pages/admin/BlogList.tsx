@@ -301,7 +301,7 @@ export default function BlogList() {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                          <a href={`/blog/${blog.slug}`} target="_blank" rel="noopener noreferrer">
+                          <a href={`/blogs/${blog.slug}`} target="_blank" rel="noopener noreferrer">
                             <Eye className="w-4 h-4 mr-2" />
                             View
                           </a>

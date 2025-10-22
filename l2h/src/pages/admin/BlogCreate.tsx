@@ -415,7 +415,7 @@ export default function BlogCreate() {
                     required
                   />
                   <p className="text-xs text-muted-foreground">
-                    URL: /blog/{slug || 'your-post-slug'}
+                    URL: /blogs/{slug || 'your-post-slug'}
                   </p>
                 </div>
 
