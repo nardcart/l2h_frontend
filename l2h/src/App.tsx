@@ -14,6 +14,7 @@ import Ebooks from "./pages/Ebooks";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import QualityPolicy from "./pages/QualityPolicy";
 import RefundsCancellation from "./pages/RefundsCancellation";
+import Partnerships from "./pages/Partnerships";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -73,12 +74,12 @@ const App = () => (
                 <Route path="/blogs" element={<Blogs />} />
                 <Route path="/blogs/:slug" element={<BlogDetail />} />
                 <Route path="/success-stories" element={<SuccessStories />} />
-                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/about-us" element={<Jobs />} />
                 <Route path="/ebooks" element={<Ebooks />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/quality-policy" element={<QualityPolicy />} />
                 <Route path="/refunds-cancellation" element={<RefundsCancellation />} />
-                <Route path="/partnerships" element={<div className="pt-16 p-8 text-center"><h1 className="text-4xl font-bold">Partnerships - Coming Soon</h1></div>} />
+                <Route path="/partnerships" element={<Partnerships />} />
                 <Route path="/courses/:category" element={<Courses />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

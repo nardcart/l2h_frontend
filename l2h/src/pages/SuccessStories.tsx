@@ -66,7 +66,7 @@ const SuccessStories = () => {
               <div className="relative">
                 <div className="relative overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop&auto=format" 
+                    src="/images/14.jpg" 
                     alt="Success Stories - Professional achievements and career growth" 
                     className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
                   />

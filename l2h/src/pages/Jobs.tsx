@@ -46,6 +46,105 @@ const Jobs = () => {
               We are proud to be the catalyst for positive change in the lives of countless individuals. Our commitment to providing affordable upskilling courses has empowered our students to achieve their goals, secure better job opportunities, and embrace lifelong learning.
             </p>
           </div>
+
+          {/* Community Links */}
+          <div className="mt-12">
+            <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center">Join Our Communities</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Mental Health Community */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-pink-300 overflow-hidden bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <img 
+                      src="/images/com_cummunity.png" 
+                      alt="Mental Health Community Logo" 
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <h4 className="text-xl font-bold mb-3 text-gray-900">Mental Health Community</h4>
+                  <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                    Connect with over 5,000+ mental health professionals across India. Access exclusive resources and case studies.
+                  </p>
+                  <Button 
+                    asChild
+                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <a 
+                      href="https://shreemcircle-a3xymj1.gamma.site/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2"
+                    >
+                      Join Community
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Entrepreneur Community */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-green-300 overflow-hidden bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <img 
+                      src="/images/whatsapp.png" 
+                      alt="WhatsApp Logo" 
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <h4 className="text-xl font-bold mb-3 text-gray-900">Entrepreneur Community</h4>
+                  <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                    Network with entrepreneurs, share innovative ideas, and grow your business together on WhatsApp.
+                  </p>
+                  <Button 
+                    asChild
+                    className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <a 
+                      href="https://chat.whatsapp.com/DotnurYTnICHzwQpRonkab?mode=wwc" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2"
+                    >
+                      Join on WhatsApp
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* L2H Community */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-blue-300 overflow-hidden bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                    <img 
+                      src="/images/whatsapp.png" 
+                      alt="WhatsApp Logo" 
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <h4 className="text-xl font-bold mb-3 text-gray-900">L2H Community</h4>
+                  <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                    Join our main WhatsApp community for course updates, live discussions, and peer support from learners.
+                  </p>
+                  <Button 
+                    asChild
+                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <a 
+                      href="https://chat.whatsapp.com/GgJ2JNsPxQXAGgOaWyfQyp?mode=wwc" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2"
+                    >
+                      Join on WhatsApp
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </section>
 

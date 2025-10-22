@@ -141,12 +141,12 @@ const Navigation = () => {
             </Link>
 
             <Link
-              to="/jobs"
+              to="/about-us"
               className={`font-medium transition-smooth ${
-                isActive('/jobs') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                isActive('/about-us') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              Jobs
+              About Us
             </Link>
 
             <Link
@@ -198,8 +198,8 @@ const Navigation = () => {
               <Link to="/success-stories" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Success Stories
               </Link>
-              <Link to="/jobs" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
-                Jobs
+              <Link to="/about-us" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
+                About Us
               </Link>
               <Link to="/partnerships" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Partnerships

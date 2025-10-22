@@ -226,7 +226,7 @@ const Blogs = () => {
               <div className="relative">
                 <div className="relative overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop&auto=format" 
+                    src="/images/15.jpg" 
                     alt="Our Blog - Professional insights and career growth" 
                     className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
                   />

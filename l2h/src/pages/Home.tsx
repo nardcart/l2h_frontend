@@ -54,7 +54,7 @@ const Home = () => {
         { text: "Explore Programs", style: "primary", url: "/courses", isExternal: false },
         { text: "Try L2H by Login", style: "outline", url: "https://l2h.akamai.net.in/my-zone-full", isExternal: true }
       ],
-      image: "/images/1.jpg"
+      image: "/images/12.jpg"
     },
     {
       id: 2,
@@ -68,7 +68,7 @@ const Home = () => {
         { text: "Browse Courses", style: "primary", url: "/courses", isExternal: false },
         { text: "Free Demo Class", style: "outline", url: "https://l2h.akamai.net.in/test-series", isExternal: true }
       ],
-      image: "/images/3.jpg"
+      image: "/images/13.jpg"
     },
     {
       id: 3,
@@ -82,7 +82,7 @@ const Home = () => {
         { text: "Get Started Now", style: "primary", url: "https://l2h.akamai.net.in/my-zone-full", isExternal: true },
         { text: "View Success Stories", style: "outline", url: "/success-stories", isExternal: false }
       ],
-      image: "/images/4.jpg"
+      image: "/images/16.jpg"
     }
   ];
 
@@ -564,40 +564,104 @@ const Home = () => {
       </section>
 
       {/* Success Story Video Section */}
-      <section className="py-20 bg-white relative">
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Hear from Simplilearn Alumni at Top Companies
+            Meet Our Successful L2H Alumni.
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover how our learners transformed their careers and landed jobs at leading organizations
+            Discover how they transformed their skills and career paths with our programs.
             </p>
           </div>
           
-          <div className="max-w-5xl mx-auto">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ paddingBottom: '56.25%', height: 0 }}>
+          <div className="max-w-6xl mx-auto relative">
+            {/* Decorative Image Pattern - Right Side (Half Behind, Half Outside) */}
+            <div className="hidden lg:block absolute -right-12 top-1/2 -translate-y-1/2 w-80 h-96 z-0">
+              <img 
+                src="/images/12.jpg" 
+                alt="Success Stories" 
+                className="w-full h-full object-cover rounded-3xl shadow-2xl opacity-90 hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  transform: 'rotate(5deg)',
+                }}
+              />
+            </div>
+
+            {/* Decorative Image Pattern - Left Side (Half Behind, Half Outside) */}
+            <div className="hidden lg:block absolute -left-12 top-1/2 -translate-y-1/2 w-72 h-80 z-0">
+              <img 
+                src="/images/13.jpg" 
+                alt="Student Success" 
+                className="w-full h-full object-cover rounded-3xl shadow-2xl opacity-85 hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  transform: 'rotate(-5deg)',
+                }}
+              />
+            </div>
+
+            {/* Video Container with overlay effect */}
+            <div className="relative z-10 max-w-5xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ paddingBottom: '56.25%', height: 0 }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src="https://www.youtube.com/embed/Dfhb1Mtt_ok"
+                  title="Success Story - L2H Alumni"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              
+              {/* Optional: Add description or call to action below video */}
+              <div className="mt-8 text-center relative z-10">
+                <p className="text-lg text-gray-600 mb-6">
+                  Join thousands of professionals who have successfully transitioned to their dream careers
+                </p>
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Start Your Journey Today
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Success Story Videos Section */}
+      <section className="py-20" style={{ backgroundColor: '#ecfffa' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Story Videos</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Watch real people share their transformation journeys with L2H
+            </p>
+          </div>
+
+          {/* Bento Grid for Videos */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[280px]">
+            {/* Large video - spans 2 columns and 2 rows */}
+            <div className="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
               <iframe
-                className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/Dfhb1Mtt_ok"
-                title="Success Story - Simplilearn Alumni"
-                frameBorder="0"
+                src="https://www.youtube.com/embed/Qb2A_URHWKc"
+                title="Success Story 1"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-              ></iframe>
+                className="w-full h-full"
+              />
             </div>
-            
-            {/* Optional: Add description or call to action below video */}
-            <div className="mt-8 text-center">
-              <p className="text-lg text-gray-600 mb-6">
-                Join thousands of professionals who have successfully transitioned to their dream careers
-              </p>
-              <Button 
-                className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                Start Your Journey Today
-              </Button>
+
+            {/* Regular sized video */}
+            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+              <iframe
+                src="https://www.youtube.com/embed/fXaGEgT9pVc"
+                title="Success Story 3"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
             </div>
           </div>
         </div>
@@ -760,10 +824,10 @@ const Home = () => {
       {/* CTA Section */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Career?</h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">CTA - Get Free Newsletter and Ebooks</h2>
+          {/* <p className="text-xl text-muted-foreground mb-8">
             Join thousands of professionals who have already started their journey to excellence
-          </p>
+          </p> */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
             <Input
               type="email"

@@ -19,22 +19,22 @@ export interface LogoConfig {
 
 // Default logo configuration - Change this to customize your logo
 export const logoConfig: LogoConfig = {
-  type: 'icon-text', // Options: 'image', 'icon-text', 'text-only'
+  type: 'image', // Options: 'image', 'icon-text', 'text-only'
   
-  // Icon + Text Configuration (current setup)
-  icon: BookOpen,
-  iconClassName: 'w-5 h-5 text-primary-foreground',
-  text: 'L2H',
-  textClassName: 'text-xl font-bold gradient-primary bg-clip-text text-transparent',
-  containerClassName: 'w-8 h-8 gradient-primary rounded-lg flex items-center justify-center',
-  linkClassName: 'flex items-center space-x-2 hover-scale',
+  // Image Configuration (L2H Logo)
+  imageUrl: '/images/logo.png',
+  imageAlt: 'L2H - Low to High Upskilling Courses',
+  width: '120px',
+  height: '40px',
+  linkClassName: 'flex items-center hover-scale transition-all duration-300',
 
-  // Image Configuration (uncomment and set these to use an image logo)
-  // imageUrl: '/path/to/your/logo.png',
-  // imageAlt: 'L2H Logo',
-  // width: '120px',
-  // height: '40px',
-  // linkClassName: 'hover-scale',
+  // OLD Icon + Text Configuration (commented out)
+  // icon: BookOpen,
+  // iconClassName: 'w-5 h-5 text-primary-foreground',
+  // text: 'L2H',
+  // textClassName: 'text-xl font-bold gradient-primary bg-clip-text text-transparent',
+  // containerClassName: 'w-8 h-8 gradient-primary rounded-lg flex items-center justify-center',
+  // linkClassName: 'flex items-center space-x-2 hover-scale',
   
   // Text Only Configuration (uncomment to use text only)
   // text: 'L2H Education',

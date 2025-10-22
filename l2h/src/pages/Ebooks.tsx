@@ -151,7 +151,7 @@ export default function Ebooks() {
               <div className="relative">
                 <div className="relative overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop&auto=format" 
+                    src="/images/collage.jpg" 
                     alt="Free Ebooks - Professional resources" 
                     className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
                   />

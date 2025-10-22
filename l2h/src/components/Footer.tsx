@@ -7,7 +7,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-1">
-            <h3 className="text-2xl font-bold gradient-text mb-4">L2H</h3>
+            <div className="mb-4">
+              <img 
+                src="/images/logo.png" 
+                alt="L2H - Low to High Upskilling Courses" 
+                className="h-10 w-auto object-contain logo-image"
+              />
+            </div>
             <p className="text-muted-foreground mb-4">
               India's Premier Institution for Extraordinary Professionals
             </p>

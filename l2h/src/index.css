@@ -125,6 +125,48 @@ All colors MUST be HSL.
   }
 }
 
+/* Enhanced Logo Styles */
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+  max-height: 48px;
+}
+
+.logo-container:hover {
+  transform: translateY(-1px);
+}
+
+.logo-image {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+  transition: var(--transition-smooth);
+  max-height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-image:hover {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1)) brightness(1.05);
+}
+
+/* Responsive Logo Sizing */
+@media (max-width: 640px) {
+  .logo-container img {
+    width: 90px !important;
+    height: 32px !important;
+    object-fit: contain;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .logo-container img {
+    width: 110px !important;
+    height: 36px !important;
+    object-fit: contain;
+  }
+}
+
 @layer utilities {
   .gradient-primary {
     background: var(--gradient-primary);
@@ -395,5 +437,89 @@ All colors MUST be HSL.
       linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
     mask-composite: intersect;
     -webkit-mask-composite: source-in;
+  }
+
+  /* Blog Content Styles with Manrope Font */
+  .prose {
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+  }
+
+  .prose p,
+  .prose li,
+  .prose blockquote {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+  }
+
+  .prose strong {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+  }
+
+  /* Extra Large Blog Content */
+  .blog-content-large {
+    font-size: 1.375rem !important; /* 22px */
+    line-height: 2rem !important; /* 32px */
+    font-weight: 300 !important;
+  }
+
+  .blog-content-large p {
+    font-size: 1.375rem !important; /* 22px */
+    line-height: 2rem !important; /* 32px */
+    margin-bottom: 1.5rem !important;
+    font-weight: 300 !important;
+  }
+
+  .blog-content-large h1 {
+    font-size: 3rem !important; /* 48px */
+    line-height: 3.5rem !important;
+    margin-top: 2.5rem !important;
+    margin-bottom: 1.5rem !important;
+    font-weight: 600 !important;
+  }
+
+  .blog-content-large h2 {
+    font-size: 2.5rem !important; /* 40px */
+    line-height: 3rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1.25rem !important;
+    font-weight: 600 !important;
+  }
+
+  .blog-content-large h3 {
+    font-size: 2rem !important; /* 32px */
+    line-height: 2.5rem !important;
+    margin-top: 1.75rem !important;
+    margin-bottom: 1rem !important;
+    font-weight: 600 !important;
+  }
+
+  .blog-content-large li {
+    font-size: 1.375rem !important; /* 22px */
+    line-height: 2rem !important;
+    margin-bottom: 0.75rem !important;
+    font-weight: 300 !important;
+  }
+
+  .blog-content-large blockquote {
+    font-size: 1.5rem !important; /* 24px */
+    line-height: 2.25rem !important;
+    font-weight: 300 !important;
+  }
+
+  .blog-content-large strong,
+  .blog-content-large b {
+    font-size: 1.375rem !important; /* 22px */
+    font-weight: 600 !important;
   }
 }

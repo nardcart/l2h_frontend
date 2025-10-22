@@ -18,7 +18,8 @@ const Logo = ({ config = logoConfig, linkTo = '/' }: LogoProps) => {
               width: config.width,
               height: config.height,
             }}
-            className="object-contain"
+            className="logo-image object-contain"
+            loading="eager"
           />
         );
 
@@ -50,7 +51,7 @@ const Logo = ({ config = logoConfig, linkTo = '/' }: LogoProps) => {
   };
 
   return (
-    <Link to={linkTo} className={config.linkClassName}>
+    <Link to={linkTo} className={`logo-container ${config.linkClassName}`}>
       {renderLogoContent()}
     </Link>
   );

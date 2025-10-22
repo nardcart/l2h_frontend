@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { apiService } from '@/services/api.service';
-import { API_ENDPOINTS } from '@/config/api';
+import { API_ENDPOINTS, API_BASE_URL } from '@/config/api';
 
 interface BlogPost {
   _id: string;
@@ -57,11 +57,20 @@ interface BlogPost {
   updatedAt: string;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  postCount: number;
+}
+
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [blog, setBlog] = useState<BlogPost | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<BlogPost['relatedBlogs']>([]);
+  const [recommendedBlogs, setRecommendedBlogs] = useState<BlogPost[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -69,6 +78,8 @@ export default function BlogDetail() {
     if (slug) {
       fetchBlog();
     }
+    fetchCategories();
+    fetchRecommendedBlogs();
   }, [slug]);
 
   const fetchBlog = async () => {
@@ -99,6 +110,32 @@ export default function BlogDetail() {
       setRelatedBlogs(blogs);
     } catch (err) {
       console.error('Error fetching related blogs:', err);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.CATEGORIES}`);
+      const result = await response.json();
+      
+      if (result.status && result.data) {
+        setCategories(result.data);
+      }
+    } catch (error: any) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchRecommendedBlogs = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.BLOGS}?status=published&limit=3&sort=-publishedAt`);
+      const result = await response.json();
+      
+      if (result.status && result.data) {
+        setRecommendedBlogs(result.data);
+      }
+    } catch (error: any) {
+      console.error('Error fetching recommended blogs:', error);
     }
   };
 
@@ -205,7 +242,7 @@ export default function BlogDetail() {
 
       <div className="min-h-screen pt-16 bg-gray-50">
         {/* Back Button */}
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <Button
             variant="ghost"
             onClick={() => navigate('/blogs')}
@@ -216,7 +253,10 @@ export default function BlogDetail() {
           </Button>
         </div>
 
-        <article className="max-w-4xl mx-auto px-4 pb-12">
+        <div className="max-w-7xl mx-auto px-4 pb-12">
+          <div className="grid lg:grid-cols-[1fr_320px] gap-8">
+            {/* Main Content */}
+            <article className="min-w-0">
           {/* Category Badge */}
           <Link to={`/blogs?category=${blog.categoryId.slug}`}>
             <Badge className="mb-4 bg-blue-600 hover:bg-blue-700">
@@ -308,7 +348,8 @@ export default function BlogDetail() {
 
           {/* Content */}
           <div
-            className="prose prose-lg max-w-none mb-12"
+            className="prose prose-2xl max-w-none mb-12 blog-content-large"
+            style={{ fontFamily: "'Manrope', sans-serif" }}
             dangerouslySetInnerHTML={{ __html: blog.description }}
           />
 
@@ -379,45 +420,106 @@ export default function BlogDetail() {
             </CardContent>
           </Card>
 
-          {/* Related Posts */}
-          {relatedBlogs && relatedBlogs.length > 0 && (
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Related Posts</h2>
-              <div className="grid md:grid-cols-3 gap-6">
-                {relatedBlogs.map((relatedBlog) => (
-                  <Link
-                    key={relatedBlog._id}
-                    to={`/blogs/${relatedBlog.slug}`}
-                    className="group"
-                  >
-                    <Card className="h-full hover:shadow-lg transition-shadow">
-                      <CardContent className="p-0">
-                        <img
-                          src={relatedBlog.coverImage}
-                          alt={relatedBlog.title}
-                          className="w-full h-48 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+            </article>
+
+            {/* Sidebar */}
+            <aside className="space-y-6 lg:sticky lg:top-20 self-start">
+              {/* Categories */}
+              <Card className="bg-white">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold mb-4">Categories</h3>
+                  <ul className="space-y-3">
+                    {categories.map((category) => (
+                      <li key={category._id}>
+                        <Link
+                          to={`/blogs?category=${category.slug}`}
+                          className="flex items-center justify-between text-gray-700 hover:text-blue-600 transition-colors"
+                        >
+                          <span className="text-base">{category.name}</span>
+                          <span className="text-sm text-gray-500">({category.postCount})</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Related Posts */}
+              {relatedBlogs && relatedBlogs.length > 0 && (
+                <Card className="bg-white">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-4">Related Posts</h3>
+                    <div className="space-y-4">
+                      {relatedBlogs.map((relatedBlog) => (
+                        <Link
+                          key={relatedBlog._id}
+                          to={`/blogs/${relatedBlog.slug}`}
+                          className="group block"
+                        >
+                          <div className="relative mb-2">
+                            <img
+                              src={relatedBlog.coverImage}
+                              alt={relatedBlog.title}
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                            <Badge className="absolute top-2 right-2 bg-blue-600 hover:bg-blue-700 text-xs">
+                              TIPS
+                            </Badge>
+                          </div>
+                          <h4 className="font-semibold text-sm mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
                             {relatedBlog.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                            {relatedBlog.excerpt}
-                          </p>
+                          </h4>
                           <time className="text-xs text-gray-500">
                             {relatedBlog.publishedAt 
-                              ? format(new Date(relatedBlog.publishedAt), 'MMM dd, yyyy')
+                              ? format(new Date(relatedBlog.publishedAt), 'dd MMM yyyy')
                               : 'Draft'}
                           </time>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
-        </article>
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Recommended Posts */}
+              {recommendedBlogs && recommendedBlogs.length > 0 && (
+                <Card className="bg-white">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-4">Recommended for You</h3>
+                    <div className="space-y-4">
+                      {recommendedBlogs.map((recBlog) => (
+                        <Link
+                          key={recBlog._id}
+                          to={`/blogs/${recBlog.slug}`}
+                          className="group block"
+                        >
+                          <div className="relative mb-2">
+                            <img
+                              src={recBlog.coverImage}
+                              alt={recBlog.title}
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                            <Badge className="absolute top-2 right-2 bg-blue-600 hover:bg-blue-700 text-xs">
+                              TIPS
+                            </Badge>
+                          </div>
+                          <h4 className="font-semibold text-sm mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
+                            {recBlog.title}
+                          </h4>
+                          <time className="text-xs text-gray-500">
+                            {recBlog.publishedAt 
+                              ? format(new Date(recBlog.publishedAt), 'dd MMM yyyy')
+                              : 'Draft'}
+                          </time>
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </aside>
+          </div>
+        </div>
       </div>
     </>
   );
