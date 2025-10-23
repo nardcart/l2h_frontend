@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Footer from '@/components/Footer';
+import { motion } from 'framer-motion';
 import { 
   Briefcase,
   Users,
@@ -9,6 +10,35 @@ import {
   ExternalLink
 } from 'lucide-react';
 
+interface TeamMember {
+  name: string;
+  role: string;
+  image: string;
+}
+
+const teamMembers: TeamMember[] = [
+  {
+    name: 'Khushi Subtamanian',
+    role: 'Marketing Expert',
+    image: '/images/kool1.png'
+  },
+  {
+    name: 'Devansh Ganatra',
+    role: 'Brand & Communication',
+    image: '/images/subhum.png'
+  },
+  {
+    name: 'Sumit Sahu',
+    role: 'Business Development',
+    image: '/images/kool.png'
+  },
+  {
+    name: 'Meet Bhanushali',
+    role: 'AI Specialist',
+    image: '/images/meet.png'
+  }
+];
+
 const Jobs = () => {
   return (
     <div className="min-h-screen pt-16">
@@ -16,6 +46,19 @@ const Jobs = () => {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
+            {/* Logo */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex justify-center mb-8"
+            >
+              <img 
+                src="/images/logo.png" 
+                alt="L2H - Low to High Upskilling Courses" 
+                className="h-24 w-auto object-contain"
+              />
+            </motion.div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               India's Only Skilling and Training Marketplace
             </h1>
@@ -28,10 +71,27 @@ const Jobs = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">What Drives Us</h2>
           
-          <div className="bg-yellow-100 p-8 rounded-lg">
-            <p className="text-lg leading-relaxed text-gray-800">
-              We believe in empowering individuals through affordable upskilling courses. Our mission is to provide accessible education that enables personal and professional growth, regardless of financial constraints. At low 2 high we understand the importance of continuous learning in an ever-evolving world. That's why we offer a wide range of short-term and long-term upskilling courses designed to enhance your skills and open doors to new opportunities. We firmly believe that education should not be a luxury, but a fundamental right for everyone. That's why we have made it our goal to offer these courses at incredibly low costs, ensuring that financial barriers do not hinder your pursuit of knowledge.
-            </p>
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="bg-yellow-100 p-8 rounded-lg">
+              <p className="text-lg leading-relaxed text-gray-800">
+                We believe in empowering individuals through affordable upskilling courses. Our mission is to provide accessible education that enables personal and professional growth, regardless of financial constraints. At low 2 high we understand the importance of continuous learning in an ever-evolving world. That's why we offer a wide range of short-term and long-term upskilling courses designed to enhance your skills and open doors to new opportunities. We firmly believe that education should not be a luxury, but a fundamental right for everyone. That's why we have made it our goal to offer these courses at incredibly low costs, ensuring that financial barriers do not hinder your pursuit of knowledge.
+              </p>
+            </div>
+            
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="rounded-2xl overflow-hidden shadow-xl"
+            >
+              <img 
+                src="/images/12.jpg" 
+                alt="Professional training and development" 
+                className="w-full h-[400px] object-cover"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
@@ -41,10 +101,27 @@ const Jobs = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">The Power of Community</h2>
           
-          <div className="bg-yellow-100 p-8 rounded-lg">
-            <p className="text-lg leading-relaxed text-gray-800">
-              We are proud to be the catalyst for positive change in the lives of countless individuals. Our commitment to providing affordable upskilling courses has empowered our students to achieve their goals, secure better job opportunities, and embrace lifelong learning.
-            </p>
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="rounded-2xl overflow-hidden shadow-xl order-2 lg:order-1"
+            >
+              <img 
+                src="/images/13.jpg" 
+                alt="Success stories and community testimonials" 
+                className="w-full h-[400px] object-cover"
+              />
+            </motion.div>
+            
+            <div className="bg-yellow-100 p-8 rounded-lg order-1 lg:order-2">
+              <p className="text-lg leading-relaxed text-gray-800">
+                We are proud to be the catalyst for positive change in the lives of countless individuals. Our commitment to providing affordable upskilling courses has empowered our students to achieve their goals, secure better job opportunities, and embrace lifelong learning.
+              </p>
+            </div>
           </div>
 
           {/* Community Links */}
@@ -144,6 +221,54 @@ const Jobs = () => {
                 </CardContent>
               </Card>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Team Section */}
+      <section className="w-full bg-[#f9f9fb] py-20">
+        <div className="max-w-7xl mx-auto px-5">
+          {/* Section Title */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl font-bold text-[#24242D] text-center mb-16 tracking-tight"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            Our Team
+          </motion.h2>
+
+          {/* Team Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative overflow-hidden rounded-[20px] bg-white shadow-[0_10px_25px_rgba(0,0,0,0.06)] transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_15px_35px_rgba(0,0,0,0.1)]"
+              >
+                {/* Member Image */}
+                <div className="overflow-hidden rounded-t-[20px]">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-[350px] object-cover transition-transform duration-600 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Member Info */}
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-[#24242D] mb-1.5" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    {member.name}
+                  </h3>
+                  <p className="text-sm font-medium text-[#444] opacity-80" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    {member.role}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

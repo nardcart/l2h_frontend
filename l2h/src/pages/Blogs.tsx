@@ -228,13 +228,13 @@ const Blogs = () => {
                   <img 
                     src="/images/15.jpg" 
                     alt="Our Blog - Professional insights and career growth" 
-                    className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
+                    className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
                   />
                   {/* Optimized gradient overlays for seamless blending with white background */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/90"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/50 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-white/30"></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/70"></div>
+                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[90%] via-transparent to-white/95"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-[10%] via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30"></div>
                 </div>
               </div>
             </div>

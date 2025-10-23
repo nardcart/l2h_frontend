@@ -68,13 +68,13 @@ const SuccessStories = () => {
                   <img 
                     src="/images/14.jpg" 
                     alt="Success Stories - Professional achievements and career growth" 
-                    className="w-[110%] h-[520px] object-cover image-edge-fade -ml-[5%] -mt-[10px]"
+                    className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
                   />
                   {/* Optimized gradient overlays for seamless blending with white background */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/90"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/50 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-white/30"></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/70"></div>
+                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[90%] via-transparent to-white/95"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-[10%] via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30"></div>
                 </div>
               </div>
             </div>
@@ -98,56 +98,56 @@ const SuccessStories = () => {
             <div className="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
               <iframe
                 src="https://www.youtube.com/embed/Qb2A_URHWKc"
-                title="Success Story 1"
+                title="Success Story - Career Transformation"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
             </div>
-
-            {/* Regular sized video */}
-            {/* <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/A3twBJ-kwFI"
-                title="Success Story 2"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div> */}
 
             {/* Regular sized video */}
             <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
               <iframe
                 src="https://www.youtube.com/embed/fXaGEgT9pVc"
-                title="Success Story 3"
+                title="Success Story - Student Journey"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
             </div>
 
-            {/* Regular sized video */}
+            {/* YouTube Shorts - vertical video 1 */}
             {/* <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
               <iframe
-                src="https://www.youtube.com/embed/Hex4jzaByWQ"
-                title="Success Story 4"
+                src="https://www.youtube.com/embed/inD-PZmkAc0"
+                title="Success Story Short - Transformation Journey"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
             </div> */}
 
-            {/* Regular sized video */}
-            {/* <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            {/* YouTube Shorts - vertical video 2 */}
+            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
               <iframe
-                src="https://www.youtube.com/embed/uoImotNo6Ak"
-                title="Success Story 5"
+                src="https://www.youtube.com/embed/UPKLILUdufw"
+                title="Success Story Short - Career Growth"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
-            </div> */}
+            </div>
+
+            {/* YouTube Shorts - vertical video 3 */}
+            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+              <iframe
+                src="https://www.youtube.com/embed/te27-mKTtvo"
+                title="Success Story Short - Learning Experience"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
           </div>
         </div>
       </section>

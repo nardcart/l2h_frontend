@@ -94,9 +94,9 @@ const QualityPolicy = () => {
               If you have questions about our Quality Policy or wish to provide feedback, please contact us:
             </p>
             <div className="bg-muted/50 p-6 rounded-lg mb-6">
-              <p className="text-muted-foreground mb-2"><strong>Email:</strong> quality@l2h.in</p>
-              <p className="text-muted-foreground mb-2"><strong>Phone:</strong> +91-98765-43210</p>
-              <p className="text-muted-foreground"><strong>Address:</strong> Mumbai, Maharashtra, India</p>
+              <p className="text-muted-foreground mb-2"><strong>Email:</strong> care@l2h.in</p>
+              <p className="text-muted-foreground mb-2"><strong>Phone:</strong> +91-9717268898</p>
+              <p className="text-muted-foreground"><strong>Address:</strong> New Delhi, India</p>
             </div>
           </div>
         </div>
