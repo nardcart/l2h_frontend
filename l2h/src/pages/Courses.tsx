@@ -283,7 +283,7 @@ const Courses = () => {
               <div className="relative">
                 <div className="relative overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop&auto=format" 
+                    src="/images/WhatsApp Image 2025-10-23 at 17.36.33_e4ea2f18.jpg" 
                     alt="Our Courses - Professional skill development" 
                     className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
                   />

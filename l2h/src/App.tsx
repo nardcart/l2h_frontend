@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
+import FloatingContactButton from "./components/FloatingContactButton";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Blogs from "./pages/Blogs";
@@ -83,6 +84,14 @@ const App = () => (
                 <Route path="/courses/:category" element={<Courses />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              {/* Floating Contact Button - Appears on all public pages */}
+              <FloatingContactButton 
+                whatsappNumber="917065922160"
+                phoneNumber="+917065922160"
+                whatsappMessage="Hi, I would like to inquire about your services."
+                whatsappGroupUrl="https://wa.me/qr/4OM4TAGOTZKGB1"
+                position="left"
+              />
             </>
           } />
         </Routes>
