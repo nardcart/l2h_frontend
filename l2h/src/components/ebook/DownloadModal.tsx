@@ -57,28 +57,37 @@ export default function DownloadModal({ open, onClose, ebook }: DownloadModalPro
     setIsSubmitting(true);
     try {
       const response = await ebookApi.downloadEbook({
-        ...data,
+        name: data.name,
+        email: data.email,
+        mobile: data.mobile,
+        hearAbout: data.hearAbout,
         ebookId: ebook._id,
       });
 
-      // Show success toast
-      toast({
-        title: '✅ Success!',
-        description: 'Ebook sent to your email. Check your inbox!',
-      });
+      // Fetch the file as a blob to force download (works with cross-origin URLs)
+      const downloadUrl = response.data.downloadUrl;
+      const fileResponse = await fetch(downloadUrl);
+      const blob = await fileResponse.blob();
+      
+      // Create a blob URL and trigger download
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `${ebook.name}.pdf` || 'ebook.pdf';
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
 
-      // Start download in new tab
-      window.open(response.data.downloadUrl, '_blank');
-
-      // Close modal and reset form
-      setTimeout(() => {
-        onClose();
-        reset();
-      }, 1000);
+      // Close modal and reset form immediately
+      onClose();
+      reset();
     } catch (error: any) {
       toast({
         title: '❌ Error',
-        description: error.response?.data?.message || 'Failed to send ebook',
+        description: error.response?.data?.message || 'Failed to download ebook',
         variant: 'destructive',
       });
     } finally {
@@ -145,10 +154,10 @@ export default function DownloadModal({ open, onClose, ebook }: DownloadModalPro
             )}
           </div>
 
-          {/* Mobile (Optional) */}
+          {/* Mobile */}
           <div>
             <Label htmlFor="mobile" className="text-base">
-              Mobile Number (Optional)
+              Mobile Number
             </Label>
             <Input
               id="mobile"
@@ -185,17 +194,17 @@ export default function DownloadModal({ open, onClose, ebook }: DownloadModalPro
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Sending to your email...
+                Downloading...
               </>
             ) : (
               <>
-                📧 Get PDF Instantly
+                📥 Download PDF Instantly
               </>
             )}
           </Button>
 
           <p className="text-xs text-gray-500 text-center">
-            PDF will be sent to your email immediately. Check your inbox!
+            Your download will start automatically in a new tab!
           </p>
         </form>
       </DialogContent>
