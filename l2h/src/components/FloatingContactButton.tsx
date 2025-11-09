@@ -88,7 +88,7 @@ const FloatingContactButton: React.FC<FloatingContactButtonProps> = ({
           className="flex items-center px-4 py-3 bg-white text-gray-800 no-underline hover:bg-gray-100 transition-colors duration-200"
         >
           <FaWhatsapp className="text-[20px] md:text-[24px] mr-3 min-w-[20px] md:min-w-[24px] text-[#25d366]" />
-          <span className="text-[12px] md:text-[14px] font-medium text-black">Join Group</span>
+          <span className="text-[12px] md:text-[14px] font-medium text-black">Connect Now</span>
         </a>
 
         {/* Phone Link */}

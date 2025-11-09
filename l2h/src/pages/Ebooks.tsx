@@ -83,83 +83,159 @@ export default function Ebooks() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="bg-white py-8 relative overflow-hidden">
-        <div className="relative h-[500px] w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-full">
-            <div className="grid lg:grid-cols-2 gap-12 items-center h-full w-full">
-              {/* Left Content */}
-              <div className="space-y-8">
-                <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                  Free Ebooks
-                </h1>
-                
-                {/* Feature List */}
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">100+</span> Free ebooks to download
-                    </span>
+      <section className="bg-white py-8 lg:py-8 relative overflow-hidden">
+        <div className="relative w-full max-w-7xl mx-auto">
+          {/* Mobile Layout - Image with overlay text */}
+          <div className="lg:hidden relative w-full h-[500px]">
+            {/* Background Image */}
+            <img 
+              src="/images/collage.jpg" 
+              alt="Free Ebooks - Professional resources" 
+              className="absolute inset-0 w-full h-full object-cover object-top"
+            />
+            {/* Dark overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+            {/* White fade at bottom - increased height */}
+            <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/70 to-transparent"></div>
+            
+            {/* Content overlay */}
+            <div className="relative z-10 h-full flex flex-col justify-end px-6 pb-12 text-white">
+              <h1 className="text-3xl font-bold mb-6 leading-tight">
+                Free Ebooks
+              </h1>
+              
+              {/* Feature List */}
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">Instant</span> Download - No OTP required
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-lg text-gray-700">
-                      <span className="font-semibold">Expert</span> Content & resources
-                    </span>
-                  </div>
+                  <span className="text-sm font-medium">
+                    <span className="font-semibold">100+</span> Free ebooks to download
+                  </span>
                 </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button 
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl"
-                    onClick={() => {
-                      const ebookSection = document.querySelector('#ebooks-section');
-                      ebookSection?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    Browse Ebooks
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200"
-                  >
-                    Learn More
-                  </Button>
+                <div className="flex items-center space-x-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-medium">
+                    <span className="font-semibold">Instant</span> Download - No OTP required
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-medium">
+                    <span className="font-semibold">Expert</span> Content & resources
+                  </span>
                 </div>
               </div>
 
-              {/* Right Image */}
-              <div className="relative">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src="/images/collage.jpg" 
-                    alt="Free Ebooks - Professional resources" 
-                    className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
-                  />
-                  {/* Optimized gradient overlays for seamless blending with white background */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[90%] via-transparent to-white/95"></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-[10%] via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent"></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30"></div>
+              {/* CTA Buttons */}
+              <div className="flex flex-col gap-3">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-base font-semibold rounded-lg shadow-lg transition-all duration-200"
+                  onClick={() => {
+                    const ebookSection = document.querySelector('#ebooks-section');
+                    ebookSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Browse Ebooks
+                </Button>
+                <Button 
+                  className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 text-base font-semibold rounded-lg transition-all duration-200 border-2 border-blue-600"
+                >
+                  Learn More
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout - Side by side */}
+          <div className="hidden lg:block h-[500px] px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-center h-full">
+              <div className="grid lg:grid-cols-2 gap-12 items-center h-full w-full">
+                {/* Left Content */}
+                <div className="space-y-8">
+                  <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                    Free Ebooks
+                  </h1>
+                  
+                  {/* Feature List */}
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <span className="text-lg text-gray-700">
+                        <span className="font-semibold">100+</span> Free ebooks to download
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <span className="text-lg text-gray-700">
+                        <span className="font-semibold">Instant</span> Download - No OTP required
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <span className="text-lg text-gray-700">
+                        <span className="font-semibold">Expert</span> Content & resources
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button 
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl"
+                      onClick={() => {
+                        const ebookSection = document.querySelector('#ebooks-section');
+                        ebookSection?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      Browse Ebooks
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-lg transition-all duration-200"
+                    >
+                      Learn More
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Right Image */}
+                <div className="relative">
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src="/images/collage.jpg" 
+                      alt="Free Ebooks - Professional resources" 
+                      className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
+                    />
+                    {/* Optimized gradient overlays for seamless blending with white background */}
+                    <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[90%] via-transparent to-white/95"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-[10%] via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/30"></div>
+                  </div>
                 </div>
               </div>
             </div>
