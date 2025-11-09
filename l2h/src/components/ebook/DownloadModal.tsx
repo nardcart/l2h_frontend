@@ -114,12 +114,12 @@ export default function DownloadModal({ open, onClose, ebook }: DownloadModalPro
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
           {/* Info Banner */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+          {/* <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
             <p className="text-sm text-green-800 flex items-center gap-2 font-medium">
               <span className="text-xl">⚡</span>
               <span>Instant download - No OTP verification needed!</span>
             </p>
-          </div>
+          </div> */}
 
           {/* Name */}
           <div>

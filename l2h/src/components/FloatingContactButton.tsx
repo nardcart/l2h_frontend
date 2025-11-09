@@ -11,10 +11,10 @@ interface FloatingContactButtonProps {
 }
 
 const FloatingContactButton: React.FC<FloatingContactButtonProps> = ({ 
-  whatsappNumber = '917065922160', 
-  phoneNumber = '+917065922160',
+  whatsappNumber = '919205321167', 
+  phoneNumber = '+919205321167',
   whatsappMessage = 'Hi, I would like to inquire about your services.',
-  whatsappGroupUrl = 'https://wa.me/qr/4OM4TAGOTZKGB1',
+  whatsappGroupUrl = 'https://wa.me/message/RPCZPHRPCA3EP1',
   position = 'left',
   buttonImage = '/images/whatsapp.png'
 }) => {
