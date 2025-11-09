@@ -223,7 +223,7 @@ const Courses = () => {
           <div className="lg:hidden relative w-full h-[500px]">
             {/* Background Image */}
             <img 
-              src="/images/WhatsApp Image 2025-10-23 at 17.36.33_e4ea2f18.jpg" 
+              src="/images/1.jpg" 
               alt="Our Courses - Professional skill development" 
               className="absolute inset-0 w-full h-full object-cover object-top"
             />
@@ -356,7 +356,7 @@ const Courses = () => {
                 <div className="relative">
                   <div className="relative overflow-hidden">
                     <img 
-                      src="/images/WhatsApp Image 2025-10-23 at 17.36.33_e4ea2f18.jpg" 
+                      src="/images/1.jpg" 
                       alt="Our Courses - Professional skill development" 
                       className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
                     />
