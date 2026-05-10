@@ -141,6 +141,15 @@ const Navigation = () => {
             </Link>
 
             <Link
+              to="/learners-network"
+              className={`font-medium transition-smooth ${
+                isActive('/learners-network') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Alumni
+            </Link>
+
+            <Link
               to="/about-us"
               className={`font-medium transition-smooth ${
                 isActive('/about-us') ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
@@ -197,6 +206,9 @@ const Navigation = () => {
               </Link>
               <Link to="/success-stories" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Success Stories
+              </Link>
+              <Link to="/learners-network" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
+                Alumni
               </Link>
               <Link to="/about-us" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 About Us

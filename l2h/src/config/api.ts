@@ -3,8 +3,17 @@
  * Centralized API endpoints and configuration
  */
 
-// Get API base URL from environment variable
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const rawApiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:5000';
+
+const normalizedApiBaseUrl = rawApiBaseUrl.trim().replace(/\/+$/, '');
+
+// Prefer a value that already ends with /api, otherwise append it.
+export const API_BASE_URL = normalizedApiBaseUrl.endsWith('/api')
+  ? normalizedApiBaseUrl
+  : `${normalizedApiBaseUrl}/api`;
 
 /**
  * API Endpoints
@@ -57,6 +66,12 @@ export const API_ENDPOINTS = {
   USER_STATS: '/admin/users/stats',
   USER_TOGGLE_STATUS: (id: string) => `/admin/users/${id}/toggle-status`,
   USER_PASSWORD: (id: string) => `/admin/users/${id}/password`,
+
+  // Alumni
+  ALUMNI_PUBLIC: '/alumni',
+  ALUMNI_ADMIN: '/alumni/admin/all',
+  ALUMNI_BY_ID: (id: string | number) => `/alumni/${id}`,
+  ALUMNI_STATUS: (id: string | number) => `/alumni/${id}/status`,
   
   // Health
   HEALTH: '/health',

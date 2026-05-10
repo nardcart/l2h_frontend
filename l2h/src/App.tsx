@@ -17,6 +17,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import QualityPolicy from "./pages/QualityPolicy";
 import RefundsCancellation from "./pages/RefundsCancellation";
 import Partnerships from "./pages/Partnerships";
+import LearnersNetwork from "./pages/LearnersNetwork";
+import AlumniSubmission from "./pages/AlumniSubmission";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -30,6 +32,7 @@ import CategoryCreate from "./pages/admin/categories/CategoryCreate";
 import EbookManagement from "./pages/admin/EbookManagement";
 import EbookEmailManager from "./pages/admin/EbookEmailManager";
 import UserManagement from "./pages/admin/UserManagement";
+import AlumniManagement from "./pages/admin/AlumniManagement";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -61,6 +64,7 @@ const App = () => (
             <Route path="ebooks" element={<EbookManagement />} />
             <Route path="ebooks/emails" element={<EbookEmailManager />} />
             <Route path="comments" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Comments - Coming Soon</h2></div>} />
+            <Route path="alumni" element={<AlumniManagement />} />
             <Route path="authors" element={<UserManagement />} />
             <Route path="newsletter" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Newsletter - Coming Soon</h2></div>} />
             <Route path="analytics" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Analytics - Coming Soon</h2></div>} />
@@ -83,6 +87,8 @@ const App = () => (
                 <Route path="/quality-policy" element={<QualityPolicy />} />
                 <Route path="/refunds-cancellation" element={<RefundsCancellation />} />
                 <Route path="/partnerships" element={<Partnerships />} />
+                <Route path="/learners-network" element={<LearnersNetwork />} />
+                <Route path="/learners-network/submit" element={<AlumniSubmission />} />
                 <Route path="/courses/:category" element={<Courses />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

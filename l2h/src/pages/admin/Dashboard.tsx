@@ -23,6 +23,7 @@ import {
   Plus,
   FolderOpen,
   Mail,
+  GraduationCap,
   Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -290,6 +291,12 @@ export default function Dashboard() {
               <Button variant="outline" className="w-full justify-start gap-2 hover:bg-gray-50">
                 <Users className="w-4 h-4" />
                 Manage Authors
+              </Button>
+            </Link>
+            <Link to="/admin/alumni">
+              <Button variant="outline" className="w-full justify-start gap-2 hover:bg-gray-50">
+                <GraduationCap className="w-4 h-4" />
+                Manage Alumni
               </Button>
             </Link>
             <Link to="/admin/analytics">

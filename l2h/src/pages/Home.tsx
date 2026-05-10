@@ -86,6 +86,33 @@ const Home = () => {
     }
   ];
 
+  const explorePages = [
+    {
+      title: 'Courses',
+      description: 'Browse live and self-paced programs across career tracks.',
+      icon: BookOpen,
+      href: '/courses',
+    },
+    {
+      title: 'Blogs',
+      description: 'Read practical articles, updates, and learning insights.',
+      icon: Globe,
+      href: '/blogs',
+    },
+    {
+      title: 'Ebooks',
+      description: 'Download free guides, checklists, and learning resources.',
+      icon: Mail,
+      href: '/ebooks',
+    },
+    {
+      title: 'Alumni',
+      description: 'Explore approved learner profiles and join the alumni network.',
+      icon: Users,
+      href: '/learners-network',
+    },
+  ];
+
   // Carousel API effect
   useEffect(() => {
     if (!carouselApi) return;
@@ -910,6 +937,41 @@ const Home = () => {
                   </CardContent>
                 </Card>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore More From L2H</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Jump straight to the pages learners use most, including the new alumni network.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {explorePages.map((item) => (
+              <Card
+                key={item.title}
+                className="border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              >
+                <CardContent className="flex h-full flex-col p-6">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
+                    <item.icon className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900">{item.title}</h3>
+                  <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{item.description}</p>
+                  <Button
+                    variant="outline"
+                    className="mt-6"
+                    onClick={() => navigate(item.href)}
+                  >
+                    Visit Page
+                  </Button>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
