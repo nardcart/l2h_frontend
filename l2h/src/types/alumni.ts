@@ -16,6 +16,13 @@ export interface AlumniRecord {
   updatedAt: string;
 }
 
+export interface AlumniUploadResult {
+  url: string;
+  key: string;
+  size: number;
+  fileName?: string;
+}
+
 export interface AlumniCreatePayload {
   full_name: string;
   email: string;

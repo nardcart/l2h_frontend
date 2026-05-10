@@ -72,6 +72,8 @@ export const API_ENDPOINTS = {
   ALUMNI_ADMIN: '/alumni/admin/all',
   ALUMNI_BY_ID: (id: string | number) => `/alumni/${id}`,
   ALUMNI_STATUS: (id: string | number) => `/alumni/${id}/status`,
+  ALUMNI_UPLOAD_PROFILE_IMAGE: '/alumni/upload/profile-image',
+  ALUMNI_UPLOAD_CERTIFICATE: '/alumni/upload/certificate',
   
   // Health
   HEALTH: '/health',

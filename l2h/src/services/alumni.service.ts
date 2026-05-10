@@ -3,6 +3,7 @@ import { apiService } from '@/services/api.service';
 import type {
   AlumniCreatePayload,
   AlumniRecord,
+  AlumniUploadResult,
   AlumniUpdatePayload,
 } from '@/types/alumni';
 
@@ -32,6 +33,28 @@ export const alumniService = {
 
   create: async (payload: AlumniCreatePayload): Promise<AlumniRecord> => {
     return apiService.post<AlumniRecord>(API_ENDPOINTS.ALUMNI_PUBLIC, payload);
+  },
+
+  uploadProfileImage: async (file: File): Promise<AlumniUploadResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return apiService.uploadFileSimple<AlumniUploadResult>(
+      API_ENDPOINTS.ALUMNI_UPLOAD_PROFILE_IMAGE,
+      formData,
+      false
+    );
+  },
+
+  uploadCertificate: async (file: File): Promise<AlumniUploadResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return apiService.uploadFileSimple<AlumniUploadResult>(
+      API_ENDPOINTS.ALUMNI_UPLOAD_CERTIFICATE,
+      formData,
+      false
+    );
   },
 
   update: async (
