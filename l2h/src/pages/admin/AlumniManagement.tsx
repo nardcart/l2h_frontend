@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   CheckCircle2,
+  ExternalLink,
+  FileText,
+  ImagePlus,
   Loader2,
   MoreHorizontal,
   Pencil,
@@ -61,10 +64,80 @@ import { alumniService } from '@/services/alumni.service';
 import type { AlumniRecord, AlumniUpdatePayload } from '@/types/alumni';
 import { DEFAULT_ALUMNI_FORM } from '@/types/alumni';
 
+const MAX_PROFILE_IMAGE_SIZE_MB = 20;
+const MAX_CERTIFICATE_SIZE_MB = 100;
+
 const getStatusBadge = (status: boolean) =>
   status
     ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-100'
     : 'bg-amber-100 text-amber-800 hover:bg-amber-100';
+
+const getFileNameFromUrl = (url?: string) => {
+  if (!url) {
+    return '';
+  }
+
+  try {
+    const pathname = new URL(url).pathname;
+    return decodeURIComponent(pathname.split('/').pop() || '');
+  } catch {
+    return url.split('/').pop() || '';
+  }
+};
+
+const cropImageToSquare = async (file: File): Promise<File> => {
+  const imageUrl = URL.createObjectURL(file);
+
+  try {
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Failed to read selected image.'));
+      img.src = imageUrl;
+    });
+
+    const cropSize = Math.min(image.width, image.height);
+    const offsetX = (image.width - cropSize) / 2;
+    const offsetY = (image.height - cropSize) / 2;
+    const outputSize = Math.min(cropSize, 1200);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = outputSize;
+    canvas.height = outputSize;
+
+    const context = canvas.getContext('2d');
+    if (!context) {
+      throw new Error('Unable to prepare image canvas.');
+    }
+
+    context.drawImage(
+      image,
+      offsetX,
+      offsetY,
+      cropSize,
+      cropSize,
+      0,
+      0,
+      outputSize,
+      outputSize
+    );
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, 'image/jpeg', 0.92);
+    });
+
+    if (!blob) {
+      throw new Error('Failed to process image.');
+    }
+
+    return new File([blob], `alumni-profile-${Date.now()}.jpg`, {
+      type: 'image/jpeg',
+      lastModified: Date.now(),
+    });
+  } finally {
+    URL.revokeObjectURL(imageUrl);
+  }
+};
 
 export default function AlumniManagement() {
   const { toast } = useToast();
@@ -75,6 +148,9 @@ export default function AlumniManagement() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState<AlumniRecord | null>(null);
   const [formData, setFormData] = useState<AlumniUpdatePayload>(DEFAULT_ALUMNI_FORM);
+  const [isUploadingProfileImage, setIsUploadingProfileImage] = useState(false);
+  const [isUploadingCertificate, setIsUploadingCertificate] = useState(false);
+  const [certificateName, setCertificateName] = useState('');
 
   const { data: alumni = [], isLoading } = useQuery({
     queryKey: ['admin-alumni', statusFilter],
@@ -179,7 +255,73 @@ export default function AlumniManagement() {
       certificate_url: record.certificate_url || '',
       storage_folder: record.storage_folder || '',
     });
+    setCertificateName(getFileNameFromUrl(record.certificate_url));
     setIsEditOpen(true);
+  };
+
+  const handleProfileImageChange = async (file: File) => {
+    setIsUploadingProfileImage(true);
+
+    try {
+      const croppedFile = await cropImageToSquare(file);
+
+      if (croppedFile.size > MAX_PROFILE_IMAGE_SIZE_MB * 1024 * 1024) {
+        throw new Error(`Profile image must be ${MAX_PROFILE_IMAGE_SIZE_MB}MB or smaller after square crop.`);
+      }
+
+      const uploadResult = await alumniService.uploadProfileImage(croppedFile);
+      setFormData((current) => ({
+        ...current,
+        profile_image_url: uploadResult.url,
+      }));
+
+      toast({
+        title: 'Profile photo uploaded',
+        description: 'The image was square-cropped and uploaded successfully.',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Image upload failed',
+        description: error.message || 'Unable to upload profile photo right now.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploadingProfileImage(false);
+    }
+  };
+
+  const handleCertificateChange = async (file: File) => {
+    setIsUploadingCertificate(true);
+
+    try {
+      if (file.type !== 'application/pdf') {
+        throw new Error('Only PDF files are allowed for certificates.');
+      }
+
+      if (file.size > MAX_CERTIFICATE_SIZE_MB * 1024 * 1024) {
+        throw new Error(`Certificate PDF must be ${MAX_CERTIFICATE_SIZE_MB}MB or smaller.`);
+      }
+
+      const uploadResult = await alumniService.uploadCertificate(file);
+      setFormData((current) => ({
+        ...current,
+        certificate_url: uploadResult.url,
+      }));
+      setCertificateName(uploadResult.fileName || file.name);
+
+      toast({
+        title: 'Certificate uploaded',
+        description: 'Certificate PDF uploaded successfully.',
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Certificate upload failed',
+        description: error.message || 'Unable to upload certificate PDF right now.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploadingCertificate(false);
+    }
   };
 
   const handleUpdate = () => {
@@ -369,6 +511,7 @@ export default function AlumniManagement() {
           setIsEditOpen(open);
           if (!open) {
             setSelectedAlumni(null);
+            setCertificateName('');
           }
         }}
       >
@@ -440,31 +583,128 @@ export default function AlumniManagement() {
                 }
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="profile_image_url">Profile Image URL</Label>
-              <Input
-                id="profile_image_url"
-                value={formData.profile_image_url || ''}
-                onChange={(event) =>
-                  setFormData((current) => ({
-                    ...current,
-                    profile_image_url: event.target.value,
-                  }))
-                }
-              />
+            <div className="space-y-3 md:col-span-2">
+              <Label htmlFor="profile_image_upload">Profile Photo</Label>
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center">
+                  <div className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border bg-white">
+                    {formData.profile_image_url ? (
+                      <img
+                        src={formData.profile_image_url}
+                        alt="Profile preview"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 text-slate-400">
+                        <ImagePlus className="h-8 w-8" />
+                        <span className="text-xs">1:1 preview</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-3">
+                    <Input
+                      id="profile_image_upload"
+                      type="file"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) {
+                          void handleProfileImageChange(file);
+                        }
+                      }}
+                      disabled={isUploadingProfileImage}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Auto-crops to square before upload. Max size: 20MB.
+                    </p>
+                    <Input
+                      value={formData.profile_image_url || ''}
+                      onChange={(event) =>
+                        setFormData((current) => ({
+                          ...current,
+                          profile_image_url: event.target.value,
+                        }))
+                      }
+                      placeholder="Profile image URL"
+                    />
+                    {formData.profile_image_url && (
+                      <a
+                        href={formData.profile_image_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Open uploaded image
+                      </a>
+                    )}
+                    {isUploadingProfileImage && (
+                      <div className="inline-flex items-center gap-2 text-sm text-blue-600">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Uploading profile photo...
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="certificate_url">Certificate URL</Label>
-              <Input
-                id="certificate_url"
-                value={formData.certificate_url || ''}
-                onChange={(event) =>
-                  setFormData((current) => ({
-                    ...current,
-                    certificate_url: event.target.value,
-                  }))
-                }
-              />
+            <div className="space-y-3 md:col-span-2">
+              <Label htmlFor="certificate_upload">Certificate PDF</Label>
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4">
+                <div className="space-y-3">
+                  <Input
+                    id="certificate_upload"
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) {
+                        void handleCertificateChange(file);
+                      }
+                    }}
+                    disabled={isUploadingCertificate}
+                  />
+                  <p className="text-xs text-muted-foreground">PDF only. Max size: 100MB.</p>
+                  <Input
+                    value={formData.certificate_url || ''}
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        certificate_url: event.target.value,
+                      }))
+                    }
+                    placeholder="Certificate PDF URL"
+                  />
+                  {formData.certificate_url && (
+                    <div className="rounded-xl border bg-white p-3">
+                      <div className="flex items-start gap-3">
+                        <FileText className="mt-0.5 h-5 w-5 text-rose-500" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-slate-900">
+                            {certificateName || getFileNameFromUrl(formData.certificate_url)}
+                          </p>
+                          <a
+                            href={formData.certificate_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Open uploaded certificate
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {isUploadingCertificate && (
+                    <div className="inline-flex items-center gap-2 text-sm text-blue-600">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Uploading certificate PDF...
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="storage_folder">Storage Folder</Label>
@@ -502,7 +742,10 @@ export default function AlumniManagement() {
             >
               Cancel
             </Button>
-            <Button onClick={handleUpdate} disabled={updateMutation.isPending}>
+            <Button
+              onClick={handleUpdate}
+              disabled={updateMutation.isPending || isUploadingProfileImage || isUploadingCertificate}
+            >
               {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save Changes
             </Button>
