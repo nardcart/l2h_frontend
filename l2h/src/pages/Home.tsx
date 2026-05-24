@@ -19,11 +19,14 @@ import {
   Mail,
   ChevronLeft,
   ChevronRight,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Infinity as InfinityIcon,
+  RefreshCcw
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { successStoryVideos } from '@/data/successStoryVideos';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -110,6 +113,21 @@ const Home = () => {
       description: 'Explore approved learner profiles and join the alumni network.',
       icon: Users,
       href: '/learners-network',
+    },
+  ];
+
+  const heroHighlights = [
+    {
+      text: 'Lifetime Access',
+      icon: InfinityIcon,
+    },
+    {
+      text: '14-Day Refund Policy',
+      icon: RefreshCcw,
+    },
+    {
+      text: '4.9+ Lakh Enrolled',
+      icon: Users,
     },
   ];
 
@@ -319,8 +337,8 @@ const Home = () => {
       /> */}
 
       {/* Hero Carousel Section */}
-      <section className="bg-white py-8 relative overflow-hidden">
-        <div className="relative h-[500px] w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white pt-8 pb-6 relative overflow-hidden">
+        <div className="relative h-[500px] lg:h-[560px] w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Carousel
             setApi={setCarouselApi}
             opts={{ loop: true }}
@@ -446,7 +464,7 @@ const Home = () => {
                             <img 
                               src={slide.image} 
                               alt={`Professional learning - ${slide.title}`} 
-                              className="w-[105%] h-[560px] object-cover image-edge-fade -ml-[2.5%] -mt-[20px] brightness-90"
+                              className="w-[105%] h-[520px] object-cover image-edge-fade -ml-[2.5%] brightness-90"
                             />
                             {/* Optimized gradient overlays for seamless blending with white background */}
                             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[90%] via-transparent to-white/95"></div>
@@ -479,8 +497,7 @@ const Home = () => {
             </Button>
           </div>
 
-          {/* Navigation Dots - Moved to upper area */}
-          <div className="absolute  left-0 right-0 flex justify-center space-x-2 z-20">
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-20">
             {Array.from({ length: totalItems }).map((_, index) => (
               <button
                 key={index}
@@ -492,23 +509,19 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Partnership Section */}
-      <section className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            {/* <p className="text-lg text-gray-600">
-              Partnering with the world's leading universities and companies
-            </p> */}
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 opacity-70">
-            {/* <img src="/api/placeholder/150/60" alt="Microsoft" className="h-10" />
-            <img src="/api/placeholder/150/60" alt="Purdue University" className="h-10" />
-            <img src="/api/placeholder/150/60" alt="E&ICT Academy IIT Guwahati" className="h-10" />
-            <img src="/api/placeholder/150/60" alt="Scaled Agile Gold SPCT Partner" className="h-10" />
-            <img src="/api/placeholder/150/60" alt="UC San Diego Extended Studies" className="h-10" />
-            <img src="/api/placeholder/150/60" alt="REA Premium Alliance" className="h-10" /> */}
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-y border-slate-100 py-3 text-sm sm:text-base font-semibold text-slate-700">
+            {heroHighlights.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div key={item.text} className="flex items-center gap-2.5 whitespace-nowrap">
+                  <Icon className="h-5 w-5 text-blue-600" strokeWidth={2.2} />
+                  <span>{item.text}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -654,12 +667,14 @@ const Home = () => {
       {/* Success Story Video Section */}
       <section className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Meet Our Successful L2H Alumni.
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 mb-4 max-w-5xl mx-auto">
+              <span className="block">Online Skill Development Platform</span>
+              <span className="block">for Modern Careers</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover how they transformed their skills and career paths with our programs.
+            <p className="text-base sm:text-lg text-gray-600 leading-7 max-w-4xl mx-auto">
+              <span className="block">Discover job-ready and business-focused courses designed to help you succeed in today's competitive world.</span>
+              <span className="block">From counseling and psychology to marketing and entrepreneurship, L2H empowers learners with practical education and mentorship.</span>
             </p>
           </div>
           
@@ -693,7 +708,7 @@ const Home = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ paddingBottom: '56.25%', height: 0 }}>
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/Dfhb1Mtt_ok"
+                  src="https://www.youtube.com/embed/YImfk0OuvSA"
                   title="Success Story - L2H Alumni"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -728,64 +743,25 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Bento Grid for Videos */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[280px]">
-            {/* Large video - spans 2 columns and 2 rows */}
-            <div className="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/Qb2A_URHWKc"
-                title="Success Story - Career Transformation"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* Regular sized video */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/fXaGEgT9pVc"
-                title="Success Story - Student Journey"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* YouTube Shorts - vertical video 1 */}
-            {/* <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/inD-PZmkAc0"
-                title="Success Story Short - Transformation Journey"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div> */}
-
-            {/* YouTube Shorts - vertical video 2 */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/UPKLILUdufw"
-                title="Success Story Short - Career Growth"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* YouTube Shorts - vertical video 3 */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/te27-mKTtvo"
-                title="Success Story Short - Learning Experience"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:auto-rows-[140px]">
+            {successStoryVideos.map((video) => (
+              <div
+                key={video.id}
+                className={`${video.featured ? 'lg:col-span-2 lg:row-span-4' : 'lg:row-span-2'} aspect-[9/16] lg:aspect-auto flex items-center justify-center rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-black`}
+              >
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}?rel=0&playsinline=1`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                  className="h-full aspect-[9/16] max-w-full border-0"
+                />
+              </div>
+            ))}
           </div>
         </div>
+
       </section>
 
       {/* Success Stories */}

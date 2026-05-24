@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import Footer from '@/components/Footer';
@@ -6,6 +6,8 @@ import CompanyRegistrationForm from '@/components/CompanyRegistrationForm';
 import CandidateRegistrationForm from '@/components/CandidateRegistrationForm';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { companyService } from '@/services/company.service';
+import type { CompanyRecord } from '@/types/company';
 import {
   ArrowRight,
   BadgeCheck,
@@ -162,66 +164,132 @@ const careerJourney = [
   },
 ];
 
-const partnerLogos = [
-  'Biograph',
-  'Squillion',
-  'GVM',
-  'Aprolifics',
-  'Nexora',
-  'Kleins',
-  'GitaKashi',
-  'CodeNova',
-  'Northbase',
-  'Applan',
-  'SkillEdge',
-  'Ruloans',
-  'TechMinds',
-  'BluePeak',
-  'Oakter',
-  'Infinia',
-  'OrbitSoft',
-  'CloudNest',
-  'BrightPath',
-  'PixelCore',
-];
+type PlacementPartnerLogo = {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  website?: string;
+  sector?: string;
+};
 
-const partnerLogoRows = [
-  partnerLogos.slice(0, 10),
-  partnerLogos.slice(10),
-];
+const getCompanyInitials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase())
+    .join('');
 
-const partnerLogoPalettes = [
-  { bg: '#f8fafc', accent: '#1d4ed8' },
-  { bg: '#eef6ff', accent: '#0369a1' },
-  { bg: '#f5f3ff', accent: '#4f46e5' },
-  { bg: '#ecfeff', accent: '#0891b2' },
-  { bg: '#f1f5f9', accent: '#334155' },
-];
+const normalizeWebsiteUrl = (url?: string) => {
+  if (!url?.trim()) return undefined;
 
-const createPartnerLogoSrc = (name: string, index: number) => {
-  const palette = partnerLogoPalettes[index % partnerLogoPalettes.length];
-  const shapeVariant = index % 5;
-  const logoShape = [
-    `<path d="M60 20L94.641 40V80L60 100L25.359 80V40L60 20Z" fill="${palette.accent}" fill-opacity="0.10" stroke="${palette.accent}" stroke-width="5"/>
-     <path d="M60 41L76.454 50.5V69.5L60 79L43.546 69.5V50.5L60 41Z" fill="${palette.accent}"/>`,
-    `<circle cx="60" cy="60" r="38" fill="${palette.accent}" fill-opacity="0.10" stroke="${palette.accent}" stroke-width="5"/>
-     <path d="M38 60C45 45 75 45 82 60C75 75 45 75 38 60Z" fill="${palette.accent}"/>`,
-    `<rect x="27" y="27" width="66" height="66" rx="18" fill="${palette.accent}" fill-opacity="0.10" stroke="${palette.accent}" stroke-width="5"/>
-     <path d="M44 77L60 43L76 77H66L60 63L54 77H44Z" fill="${palette.accent}"/>`,
-    `<path d="M60 22L98 60L60 98L22 60L60 22Z" fill="${palette.accent}" fill-opacity="0.10" stroke="${palette.accent}" stroke-width="5"/>
-     <path d="M43 43H77V54H43V43ZM43 66H77V77H43V66Z" fill="${palette.accent}"/>`,
-    `<path d="M27 82C35 42 56 27 93 27C85 67 64 82 27 82Z" fill="${palette.accent}" fill-opacity="0.12" stroke="${palette.accent}" stroke-width="5"/>
-     <circle cx="60" cy="60" r="13" fill="${palette.accent}"/>`,
-  ][shapeVariant];
+  const trimmedUrl = url.trim();
+  return /^https?:\/\//i.test(trimmedUrl) ? trimmedUrl : `https://${trimmedUrl}`;
+};
 
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none" role="img" aria-label="${name} logo mark">
-      <rect width="120" height="120" rx="32" fill="${palette.bg}"/>
-      ${logoShape}
-    </svg>
-  `;
+const mapCompanyToPlacementPartner = (company: CompanyRecord): PlacementPartnerLogo => ({
+  id: company._id || company.unique_id || String(company.id),
+  name: company.company_name.trim(),
+  logoUrl: company.company_logo_url?.trim() || undefined,
+  website: normalizeWebsiteUrl(company.company_website),
+  sector: company.sector?.trim() || company.category?.trim() || undefined,
+});
 
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+const getPartnerDedupeKey = (partner: PlacementPartnerLogo) =>
+  `${partner.name.trim().toLowerCase()}|${partner.website || ''}`;
+
+const dedupePlacementPartners = (partners: PlacementPartnerLogo[]) =>
+  Array.from(
+    partners.reduce((partnerMap, partner) => {
+      const key = getPartnerDedupeKey(partner);
+
+      if (!partnerMap.has(key)) {
+        partnerMap.set(key, partner);
+      }
+
+      return partnerMap;
+    }, new Map<string, PlacementPartnerLogo>()).values()
+  );
+
+const createLoopedPartnerRow = (partners: PlacementPartnerLogo[], minimumItems = 12) => {
+  if (partners.length === 0) return [];
+
+  const visibleItems: PlacementPartnerLogo[] = [];
+
+  while (visibleItems.length < minimumItems) {
+    visibleItems.push(...partners);
+  }
+
+  return [...visibleItems, ...visibleItems];
+};
+
+const createPartnerMarqueeRows = (partners: PlacementPartnerLogo[]) => {
+  if (partners.length === 0) return [];
+
+  if (partners.length <= 8) {
+    const reversePartners = [...partners].reverse();
+
+    return [
+      createLoopedPartnerRow(partners, 12),
+      createLoopedPartnerRow(reversePartners, 12),
+    ];
+  }
+
+  const midpoint = Math.ceil(partners.length / 2);
+  return [
+    createLoopedPartnerRow(partners.slice(0, midpoint), 12),
+    createLoopedPartnerRow(partners.slice(midpoint), 12),
+  ].filter((row) => row.length > 0);
+};
+
+const PartnerLogoCard = ({ partner }: { partner: PlacementPartnerLogo }) => {
+  const [logoFailed, setLogoFailed] = useState(false);
+  const hasLogo = Boolean(partner.logoUrl && !logoFailed);
+  const websiteLabel = partner.website?.replace(/^https?:\/\//i, '').replace(/\/$/, '') || 'Not provided';
+
+  const card = (
+    <div className="group relative flex h-[72px] w-[148px] shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-red-200 hover:shadow-lg hover:shadow-red-100/60">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white via-white to-red-50/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      <div className="relative z-10 flex h-12 w-24 shrink-0 items-center justify-center overflow-hidden transition duration-300 group-hover:-translate-y-5 group-hover:opacity-25">
+        {hasLogo ? (
+          <img
+            src={partner.logoUrl}
+            alt={`${partner.name} logo`}
+            loading="lazy"
+            onError={() => setLogoFailed(true)}
+            className="h-full w-full object-contain grayscale transition duration-300 group-hover:grayscale-0"
+          />
+        ) : (
+          <span className="text-base font-black text-slate-500">
+            {getCompanyInitials(partner.name)}
+          </span>
+        )}
+      </div>
+
+      <div className="pointer-events-none absolute inset-1.5 z-20 flex translate-y-2 flex-col justify-center rounded-md bg-white/95 px-2 text-left opacity-0 backdrop-blur transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-red-600">Website</p>
+        <p className="truncate text-[11px] font-semibold leading-4 text-slate-900">{websiteLabel}</p>
+        <p className="mt-1 text-[9px] font-black uppercase tracking-[0.16em] text-red-600">Sector</p>
+        <p className="truncate text-[11px] font-semibold leading-4 text-slate-900">
+          {partner.sector || 'Not provided'}
+        </p>
+      </div>
+    </div>
+  );
+
+  return partner.website ? (
+    <a
+      href={partner.website}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Visit ${partner.name}`}
+    >
+      {card}
+    </a>
+  ) : (
+    card
+  );
 };
 
 const darkMetrics = [
@@ -413,6 +481,53 @@ const GetInTouchButton = ({ className = '' }: { className?: string }) => (
 export default function Placement() {
   const shouldReduceMotion = useReducedMotion();
   const [activePortalTab, setActivePortalTab] = useState<PortalTab>('company');
+  const [placementPartners, setPlacementPartners] = useState<PlacementPartnerLogo[]>([]);
+  const [partnersLoading, setPartnersLoading] = useState(true);
+  const [partnersError, setPartnersError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadPlacementPartners = async () => {
+      try {
+        setPartnersLoading(true);
+        setPartnersError(null);
+
+        const companies = await companyService.listPublic();
+        const partners = dedupePlacementPartners(
+          companies
+            .filter((company) => company.company_name?.trim())
+            .map(mapCompanyToPlacementPartner)
+        );
+
+        if (isMounted) {
+          setPlacementPartners(partners);
+        }
+      } catch (error) {
+        console.error('Failed to load placement partners', error);
+
+        if (isMounted) {
+          setPlacementPartners([]);
+          setPartnersError('Unable to load placement partners right now.');
+        }
+      } finally {
+        if (isMounted) {
+          setPartnersLoading(false);
+        }
+      }
+    };
+
+    loadPlacementPartners();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const partnerLogoRows = useMemo(
+    () => createPartnerMarqueeRows(placementPartners),
+    [placementPartners]
+  );
 
   return (
     <div className="min-h-screen overflow-hidden bg-white pt-16 text-slate-900">
@@ -425,6 +540,11 @@ export default function Placement() {
         @keyframes placement-marquee-right {
           from { transform: translateX(-50%); }
           to { transform: translateX(0); }
+        }
+
+        @keyframes placement-marquee-single {
+          from { transform: translateX(100vw); }
+          to { transform: translateX(-100%); }
         }
 
         .placement-marquee-track {
@@ -441,6 +561,10 @@ export default function Placement() {
 
         .placement-marquee-right {
           animation-name: placement-marquee-right;
+        }
+
+        .placement-marquee-single {
+          animation-name: placement-marquee-single;
         }
 
         .placement-marquee-row:hover .placement-marquee-track {
@@ -801,19 +925,29 @@ export default function Placement() {
       </section>
 
       <section className="bg-white py-14 lg:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            eyebrow="Trusted Partners"
-            title={
-              <>
-                Our Trusted <span className="text-primary-light">Placement Partners</span>
-              </>
-            }
-            subtitle="We collaborate with leading companies across various industries to provide diverse career opportunities for our students."
-          />
+        <div className="mx-auto max-w-none px-0">
+          <motion.div
+            className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={fadeUp}
+            transition={{ duration: 0.55, ease: easeOutExpo }}
+          >
+            <Badge className="mb-4 rounded-full border border-red-200 bg-red-50 px-4 py-1 text-[11px] font-black uppercase tracking-[0.24em] text-red-600 hover:bg-red-50">
+              Hiring Partners
+            </Badge>
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
+              <span className="text-red-600">1650+ Companies</span>{' '}
+              Have Hired L2H Learners
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-600">
+              We collaborate with leading companies across various industries to provide diverse career opportunities for our students.
+            </p>
+          </motion.div>
 
           <motion.div
-            className="relative mt-10 space-y-4 overflow-hidden py-3"
+            className="relative mt-8 space-y-3 overflow-hidden py-2"
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-100px' }}
@@ -823,37 +957,65 @@ export default function Placement() {
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white via-white/90 to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white via-white/90 to-transparent" />
 
-            {partnerLogoRows.map((row, rowIndex) => (
-              <div
-                key={`partner-row-${rowIndex}`}
-                className="placement-marquee-row overflow-hidden py-1.5"
-              >
-                <div
-                  className={`placement-marquee-track flex gap-4 ${
-                    rowIndex === 0 ? 'placement-marquee-left' : 'placement-marquee-right'
-                  }`}
-                  style={{ animationDuration: rowIndex === 0 ? '30s' : '34s' }}
-                >
-                  {[...row, ...row].map((partner, index) => (
-                    <div
-                      key={`${partner}-${rowIndex}-${index}`}
-                      className="group flex h-20 w-60 shrink-0 items-center justify-center px-4 transition-all duration-300 hover:-translate-y-0.5"
-                    >
-                      <img
-                        src={createPartnerLogoSrc(partner, rowIndex * 10 + index)}
-                        alt={`${partner} logo`}
-                        loading="lazy"
-                        className="h-14 w-full object-contain opacity-85 grayscale transition duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                      />
-                    </div>
-                  ))}
-                </div>
+            {partnersLoading ? (
+              <div className="flex gap-5 overflow-hidden px-6 py-1.5">
+                {Array.from({ length: 12 }).map((_, index) => (
+                  <div
+                    key={`partner-loading-${index}`}
+                    className="h-[72px] w-[148px] shrink-0 animate-pulse rounded-lg border border-slate-200 bg-slate-100"
+                  />
+                ))}
               </div>
-            ))}
+            ) : partnersError ? (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-center text-sm font-semibold text-amber-800">
+                {partnersError}
+              </div>
+            ) : placementPartners.length === 0 ? (
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-center text-sm font-semibold text-slate-600">
+                Approved placement partners will appear here as soon as companies are added.
+              </div>
+            ) : (
+              partnerLogoRows.map((row, rowIndex) => (
+                <div
+                  key={`partner-row-${rowIndex}`}
+                  className="placement-marquee-row overflow-hidden py-1.5"
+                >
+                  <div
+                    className={`placement-marquee-track flex gap-5 ${
+                      rowIndex === 0 ? 'placement-marquee-left' : 'placement-marquee-right'
+                    }`}
+                    style={{ animationDuration: rowIndex === 0 ? '34s' : '38s' }}
+                  >
+                    {row.map((partner, index) => {
+                      return (
+                        <PartnerLogoCard
+                          key={`${partner.id}-${rowIndex}-${index}`}
+                          partner={partner}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              ))
+            )}
           </motion.div>
 
           <div className="mt-8 flex justify-center">
-            <GetInTouchButton />
+            <motion.div
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+            >
+              <Button
+                asChild
+                className="group min-h-11 rounded-lg bg-red-600 px-7 font-bold text-white shadow-lg shadow-red-200 hover:bg-red-700"
+              >
+                <Link to="/placement/company/register">
+                  Get in Touch
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </motion.div>
           </div>
         </div>
       </section>

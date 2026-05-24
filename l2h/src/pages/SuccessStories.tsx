@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
 import { Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { successStoryVideos } from '@/data/successStoryVideos';
 
 const SuccessStories = () => {
   return (
@@ -160,62 +161,22 @@ const SuccessStories = () => {
             </p>
           </div>
 
-          {/* Bento Grid for Videos */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[280px]">
-            {/* Large video - spans 2 columns and 2 rows */}
-            <div className="md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/Qb2A_URHWKc"
-                title="Success Story - Career Transformation"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* Regular sized video */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/fXaGEgT9pVc"
-                title="Success Story - Student Journey"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* YouTube Shorts - vertical video 1 */}
-            {/* <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/inD-PZmkAc0"
-                title="Success Story Short - Transformation Journey"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div> */}
-
-            {/* YouTube Shorts - vertical video 2 */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/UPKLILUdufw"
-                title="Success Story Short - Career Growth"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
-
-            {/* YouTube Shorts - vertical video 3 */}
-            <div className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/te27-mKTtvo"
-                title="Success Story Short - Learning Experience"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:auto-rows-[140px]">
+            {successStoryVideos.map((video) => (
+              <div
+                key={video.id}
+                className={`${video.featured ? 'lg:col-span-2 lg:row-span-4' : 'lg:row-span-2'} aspect-[9/16] lg:aspect-auto flex items-center justify-center rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-black`}
+              >
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}?rel=0&playsinline=1`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                  className="h-full aspect-[9/16] max-w-full border-0"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>

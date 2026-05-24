@@ -53,6 +53,10 @@ export const companyService = {
     );
   },
 
+  listPublic: async (): Promise<CompanyRecord[]> => {
+    return apiService.get<CompanyRecord[]>(API_ENDPOINTS.COMPANY_PUBLIC);
+  },
+
   listAdmin: async (status?: CompanyApprovalStatus): Promise<CompanyRecord[]> => {
     const params = new URLSearchParams();
 
