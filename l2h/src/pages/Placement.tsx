@@ -6,7 +6,9 @@ import CompanyRegistrationForm from '@/components/CompanyRegistrationForm';
 import CandidateRegistrationForm from '@/components/CandidateRegistrationForm';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { candidateService } from '@/services/candidate.service';
 import { companyService } from '@/services/company.service';
+import type { CandidateRecord } from '@/types/candidate';
 import type { CompanyRecord } from '@/types/company';
 import {
   ArrowRight,
@@ -396,24 +398,53 @@ const feedbackReels = [
   },
 ];
 
-const alumni = [
-  ['Mihir Soni', 'Web Developer Intern'],
-  ['Rekhkumar Ramai', 'Graphic Designer'],
-  ['Kamyol Korat', 'Graphics Designer'],
-  ['Sheetal Shinde', 'Ads Creative Head'],
-  ['Nitin Sangani', 'UI/UX Designer'],
-  ['Sneha Patel', 'Graphic Designer'],
-  ['Krishna Bhadeshiy', 'Graphic Designer'],
-  ['Aryan Gandhi', 'Sales Executive'],
-  ['Jayveer Soni', 'Fullstack Developer'],
-  ['Jignesh Patel', 'Senior Web Designer'],
-  ['Ravindra Parmar', 'Graphics Designer'],
-  ['Vishal Makwana', 'Graphics Designer'],
-  ['Sahil Patel', 'Graphics Designer'],
-  ['Smit Garala', 'MERN Stack Developer'],
-  ['Isha Zaverdiya', 'Graphic Designer'],
-  ['Darshan Gohel', 'Trainee Software Dev.'],
-];
+type AlumniCandidate = {
+  id: string;
+  name: string;
+  role: string;
+  photoUrl?: string;
+  location?: string;
+};
+
+const getInitials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+
+const mapCandidateToAlumni = (candidate: CandidateRecord): AlumniCandidate => {
+  const currentWork = candidate.work_experiences?.find((experience) => experience.is_current);
+  const role =
+    currentWork?.position ||
+    candidate.company_position ||
+    candidate.preferred_job_role ||
+    candidate.current_course ||
+    'L2H Learner';
+  const location = [candidate.city, candidate.state].filter(Boolean).join(', ');
+
+  return {
+    id: candidate._id || candidate.unique_id || String(candidate.id),
+    name: candidate.full_name.trim(),
+    role,
+    photoUrl: candidate.photograph_url?.trim() || undefined,
+    location: location || undefined,
+  };
+};
+
+const dedupeAlumniCandidates = (candidates: AlumniCandidate[]) =>
+  Array.from(
+    candidates.reduce((candidateMap, candidate) => {
+      const key = candidate.name.trim().toLowerCase();
+
+      if (!candidateMap.has(key)) {
+        candidateMap.set(key, candidate);
+      }
+
+      return candidateMap;
+    }, new Map<string, AlumniCandidate>()).values()
+  );
 
 type PortalTab = 'student' | 'company';
 
