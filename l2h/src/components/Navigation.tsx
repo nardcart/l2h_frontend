@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, Menu, X, BookOpen, Users, Award, Briefcase, Heart } from 'lucide-react';
+import { ChevronDown, Menu, X, BookOpen, Users, Award, Briefcase } from 'lucide-react';
 import Logo from '@/components/Logo';
 
 const Navigation = () => {
@@ -12,6 +12,7 @@ const Navigation = () => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+  const isPlacementActive = location.pathname.startsWith('/placement');
 
   // Smart scroll behavior - hide on scroll down, show on scroll up
   useEffect(() => {
@@ -166,6 +167,15 @@ const Navigation = () => {
             >
               Partnerships
             </Link>
+
+            <Link
+              to="/placement"
+              className={`font-medium transition-smooth ${
+                isPlacementActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Placement
+            </Link>
           </div>
 
           {/* CTA Button */}
@@ -215,6 +225,9 @@ const Navigation = () => {
               </Link>
               <Link to="/partnerships" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
                 Partnerships
+              </Link>
+              <Link to="/placement" className="font-medium py-2" onClick={() => setIsMenuOpen(false)}>
+                Placement
               </Link>
               <Button 
                 variant="hero" 

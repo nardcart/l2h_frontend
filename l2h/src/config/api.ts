@@ -74,6 +74,16 @@ export const API_ENDPOINTS = {
   ALUMNI_STATUS: (id: string | number) => `/alumni/${id}/status`,
   ALUMNI_UPLOAD_PROFILE_IMAGE: '/alumni/upload/profile-image',
   ALUMNI_UPLOAD_CERTIFICATE: '/alumni/upload/certificate',
+
+  // Companies
+  COMPANY_PUBLIC: '/companies',
+  COMPANY_REGISTER: '/companies/register',
+  COMPANY_LOGIN: '/companies/login',
+  COMPANY_PROFILE: '/companies/me',
+  COMPANY_ADMIN: '/companies/admin/all',
+  COMPANY_ADMIN_BY_ID: (id: string | number) => `/companies/admin/${id}`,
+  COMPANY_STATUS: (id: string | number) => `/companies/admin/${id}/status`,
+  COMPANY_UPLOAD_LOGO: '/companies/upload/logo',
   
   // Health
   HEALTH: '/health',

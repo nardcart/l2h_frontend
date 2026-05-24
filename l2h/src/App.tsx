@@ -19,6 +19,8 @@ import RefundsCancellation from "./pages/RefundsCancellation";
 import Partnerships from "./pages/Partnerships";
 import LearnersNetwork from "./pages/LearnersNetwork";
 import AlumniSubmission from "./pages/AlumniSubmission";
+import Placement from "./pages/Placement";
+import CompanyRegistration from "./pages/CompanyRegistration";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -33,6 +35,7 @@ import EbookManagement from "./pages/admin/EbookManagement";
 import EbookEmailManager from "./pages/admin/EbookEmailManager";
 import UserManagement from "./pages/admin/UserManagement";
 import AlumniManagement from "./pages/admin/AlumniManagement";
+import PlacementManagement from "./pages/admin/PlacementManagement";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -65,6 +68,7 @@ const App = () => (
             <Route path="ebooks/emails" element={<EbookEmailManager />} />
             <Route path="comments" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Comments - Coming Soon</h2></div>} />
             <Route path="alumni" element={<AlumniManagement />} />
+            <Route path="placements" element={<PlacementManagement />} />
             <Route path="authors" element={<UserManagement />} />
             <Route path="newsletter" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Newsletter - Coming Soon</h2></div>} />
             <Route path="analytics" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Analytics - Coming Soon</h2></div>} />
@@ -89,6 +93,9 @@ const App = () => (
                 <Route path="/partnerships" element={<Partnerships />} />
                 <Route path="/learners-network" element={<LearnersNetwork />} />
                 <Route path="/learners-network/submit" element={<AlumniSubmission />} />
+                <Route path="/placement" element={<Placement />} />
+                <Route path="/placement/company/registor" element={<CompanyRegistration />} />
+                <Route path="/placement/company/register" element={<CompanyRegistration />} />
                 <Route path="/courses/:category" element={<Courses />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
