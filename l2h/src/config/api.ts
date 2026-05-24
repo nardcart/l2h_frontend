@@ -84,6 +84,18 @@ export const API_ENDPOINTS = {
   COMPANY_ADMIN_BY_ID: (id: string | number) => `/companies/admin/${id}`,
   COMPANY_STATUS: (id: string | number) => `/companies/admin/${id}/status`,
   COMPANY_UPLOAD_LOGO: '/companies/upload/logo',
+
+  // Candidates
+  CANDIDATE_PUBLIC: '/candidates',
+  CANDIDATE_REGISTER: '/candidates/register',
+  CANDIDATE_LOGIN: '/candidates/login',
+  CANDIDATE_PROFILE: '/candidates/me',
+  CANDIDATE_ADMIN: '/candidates/admin/all',
+  CANDIDATE_ADMIN_BY_ID: (id: string | number) => `/candidates/admin/${id}`,
+  CANDIDATE_STATUS: (id: string | number) => `/candidates/admin/${id}/status`,
+  CANDIDATE_UPLOAD_RESUME: '/candidates/upload/resume',
+  CANDIDATE_UPLOAD_PHOTOGRAPH: '/candidates/upload/photograph',
+  CANDIDATE_UPLOAD_VIDEO: '/candidates/upload/video',
   
   // Health
   HEALTH: '/health',

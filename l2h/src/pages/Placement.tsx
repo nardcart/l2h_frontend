@@ -1,10 +1,11 @@
-import { type FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import Footer from '@/components/Footer';
+import CompanyRegistrationForm from '@/components/CompanyRegistrationForm';
+import CandidateRegistrationForm from '@/components/CandidateRegistrationForm';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { companyService } from '@/services/company.service';
 import {
   ArrowRight,
   BadgeCheck,
@@ -13,8 +14,6 @@ import {
   Code2,
   FileText,
   GraduationCap,
-  Loader2,
-  LockKeyhole,
   Palette,
   Play,
   Rocket,
@@ -351,8 +350,8 @@ const alumni = [
 type PortalTab = 'student' | 'company';
 
 const portalTabs: Array<{ id: PortalTab; label: string }> = [
-  { id: 'student', label: 'Student Login' },
-  { id: 'company', label: 'Company Login' },
+  { id: 'student', label: 'Student Register' },
+  { id: 'company', label: 'Company Register' },
 ];
 
 const SectionHeading = ({
@@ -414,50 +413,6 @@ const GetInTouchButton = ({ className = '' }: { className?: string }) => (
 export default function Placement() {
   const shouldReduceMotion = useReducedMotion();
   const [activePortalTab, setActivePortalTab] = useState<PortalTab>('company');
-  const [portalForm, setPortalForm] = useState({
-    email: '',
-    password: '',
-  });
-  const [portalMessage, setPortalMessage] = useState('');
-  const [portalError, setPortalError] = useState('');
-  const [isPortalSubmitting, setIsPortalSubmitting] = useState(false);
-
-  const handlePortalSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setPortalMessage('');
-    setPortalError('');
-
-    if (activePortalTab === 'student') {
-      setPortalMessage('Student login is handled in the L2H learning portal.');
-      return;
-    }
-
-    try {
-      setIsPortalSubmitting(true);
-      const data = await companyService.login({
-        email: portalForm.email,
-        password: portalForm.password,
-      });
-
-      localStorage.setItem('companyToken', data.accessToken);
-      localStorage.setItem('companyRefreshToken', data.refreshToken);
-      localStorage.setItem('company', JSON.stringify(data.company));
-
-      setPortalMessage(
-        `Welcome back, ${data.company.company_name}. Account status: ${data.company.status}.`
-      );
-    } catch (error: any) {
-      setPortalError(error.message || 'Unable to login company. Please check the email and password.');
-    } finally {
-      setIsPortalSubmitting(false);
-    }
-  };
-
-  const updatePortalField = (field: keyof typeof portalForm, value: string) => {
-    setPortalForm((current) => ({ ...current, [field]: value }));
-    setPortalMessage('');
-    setPortalError('');
-  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-white pt-16 text-slate-900">
@@ -583,7 +538,7 @@ export default function Placement() {
 
           <motion.div
             id="placement-portal"
-            className="relative mx-auto w-full max-w-md"
+            className="relative mx-auto w-full max-w-lg"
             variants={fadeScale}
             transition={{ duration: 0.65, ease: easeOutExpo, delay: 0.1 }}
           >
@@ -607,7 +562,7 @@ export default function Placement() {
                 <div
                   className="mb-5 grid grid-cols-2 gap-1 rounded-2xl border border-primary/10 bg-white p-1 shadow-sm"
                   role="tablist"
-                  aria-label="Placement portal login tabs"
+                  aria-label="Placement portal tabs"
                 >
                   {portalTabs.map((tab) => {
                     const isActive = activePortalTab === tab.id;
@@ -618,11 +573,7 @@ export default function Placement() {
                         type="button"
                         role="tab"
                         aria-selected={isActive}
-                        onClick={() => {
-                          setActivePortalTab(tab.id);
-                          setPortalMessage('');
-                          setPortalError('');
-                        }}
+                      onClick={() => setActivePortalTab(tab.id)}
                         className={`rounded-xl px-3 py-2.5 text-center text-xs font-bold transition-all duration-200 ${
                           isActive
                             ? 'bg-primary text-white shadow-sm'
@@ -635,77 +586,11 @@ export default function Placement() {
                   })}
                 </div>
 
-                <form onSubmit={handlePortalSubmit} className="space-y-4">
-                  <label className="block text-left text-xs font-bold text-primary">
-                    {activePortalTab === 'company' ? 'Company email' : 'Student email'}
-                    <input
-                      type="email"
-                      required
-                      value={portalForm.email}
-                      onChange={(event) => updatePortalField('email', event.target.value)}
-                      placeholder={activePortalTab === 'company' ? 'company@domain.com' : 'student@email.com'}
-                      className="mt-2 h-12 w-full rounded-xl border border-primary/10 bg-white px-4 text-sm font-semibold text-slate-800 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-primary/40 focus:ring-4 focus:ring-primary/10"
-                    />
-                  </label>
-
-                  <label className="block text-left text-xs font-bold text-primary">
-                    Password
-                    <div className="relative mt-2">
-                      <input
-                        type="password"
-                        required
-                        minLength={6}
-                        value={portalForm.password}
-                        onChange={(event) => updatePortalField('password', event.target.value)}
-                        placeholder="Enter password"
-                        className="h-12 w-full rounded-xl border border-primary/10 bg-white px-4 pr-11 text-sm font-semibold text-slate-800 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-primary/40 focus:ring-4 focus:ring-primary/10"
-                      />
-                      <LockKeyhole className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary/35" />
-                    </div>
-                  </label>
-
-                  <Button
-                    type="submit"
-                    disabled={isPortalSubmitting}
-                    className="group h-12 w-full rounded-xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/15 hover:bg-primary-light"
-                  >
-                    {isPortalSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Checking company...
-                      </>
-                    ) : (
-                      <>
-                        {activePortalTab === 'company' ? 'Company Login' : 'Student Login'}
-                        <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                      </>
-                    )}
-                  </Button>
-
-                  {portalError ? (
-                    <motion.p
-                      className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-center text-xs font-bold text-amber-800"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      {portalError}
-                    </motion.p>
-                  ) : portalMessage ? (
-                    <motion.p
-                      className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-center text-xs font-bold text-emerald-700"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      {portalMessage}
-                    </motion.p>
-                  ) : (
-                    <p className="text-center text-[11px] font-semibold text-slate-500">
-                      Need help? <span className="text-primary">Contact placement team</span>
-                    </p>
-                  )}
-                </form>
+                {activePortalTab === 'company' ? (
+                  <CompanyRegistrationForm embedded />
+                ) : (
+                  <CandidateRegistrationForm embedded />
+                )}
               </div>
             </motion.div>
           </motion.div>

@@ -12,6 +12,7 @@ import {
   BarChart3,
   BookOpen,
   BriefcaseBusiness,
+  UserPlus,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -32,7 +33,8 @@ const navigation = [
   { name: 'Ebooks', href: '/admin/ebooks', icon: BookOpen },
   { name: 'Email Manager', href: '/admin/ebooks/emails', icon: Mail },
   { name: 'Alumni', href: '/admin/alumni', icon: GraduationCap },
-  { name: 'Placements', href: '/admin/placements', icon: BriefcaseBusiness },
+  { name: 'Companies', href: '/admin/placements', icon: BriefcaseBusiness },
+  { name: 'Candidates', href: '/admin/candidates', icon: UserPlus },
   { name: 'Comments', href: '/admin/comments', icon: MessageSquare },
   { name: 'Authors', href: '/admin/authors', icon: Users },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },

@@ -36,6 +36,8 @@ import EbookEmailManager from "./pages/admin/EbookEmailManager";
 import UserManagement from "./pages/admin/UserManagement";
 import AlumniManagement from "./pages/admin/AlumniManagement";
 import PlacementManagement from "./pages/admin/PlacementManagement";
+import CandidateManagement from "./pages/admin/CandidateManagement";
+import CandidateDetail from "./pages/admin/CandidateDetail";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -69,6 +71,8 @@ const App = () => (
             <Route path="comments" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Comments - Coming Soon</h2></div>} />
             <Route path="alumni" element={<AlumniManagement />} />
             <Route path="placements" element={<PlacementManagement />} />
+            <Route path="candidates" element={<CandidateManagement />} />
+            <Route path="candidates/:id" element={<CandidateDetail />} />
             <Route path="authors" element={<UserManagement />} />
             <Route path="newsletter" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Newsletter - Coming Soon</h2></div>} />
             <Route path="analytics" element={<div className="text-center py-12"><h2 className="text-2xl font-bold">Analytics - Coming Soon</h2></div>} />
