@@ -425,7 +425,7 @@ const mapCandidateToAlumni = (candidate: CandidateRecord): AlumniCandidate => {
   const location = [candidate.city, candidate.state].filter(Boolean).join(', ');
 
   return {
-    id: candidate._id || candidate.unique_id || String(candidate.id),
+    id: candidate._id || candidate.unique_id || candidate.email || candidate.full_name,
     name: candidate.full_name.trim(),
     role,
     photoUrl: candidate.photograph_url?.trim() || undefined,
@@ -436,7 +436,7 @@ const mapCandidateToAlumni = (candidate: CandidateRecord): AlumniCandidate => {
 const dedupeAlumniCandidates = (candidates: AlumniCandidate[]) =>
   Array.from(
     candidates.reduce((candidateMap, candidate) => {
-      const key = candidate.name.trim().toLowerCase();
+      const key = candidate.id || `${candidate.name.trim().toLowerCase()}|${candidate.role.trim().toLowerCase()}`;
 
       if (!candidateMap.has(key)) {
         candidateMap.set(key, candidate);
@@ -445,6 +445,46 @@ const dedupeAlumniCandidates = (candidates: AlumniCandidate[]) =>
       return candidateMap;
     }, new Map<string, AlumniCandidate>()).values()
   );
+
+const AlumniCandidateCard = ({ candidate }: { candidate: AlumniCandidate }) => {
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const hasPhoto = Boolean(candidate.photoUrl && !photoFailed);
+
+  return (
+    <motion.div
+      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-200/60 transition-colors duration-300 hover:border-primary/20"
+      variants={fadeScale}
+      transition={{ duration: 0.4, ease: easeOutExpo }}
+      whileHover={{ y: -3 }}
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="relative flex items-center gap-3">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-sm font-black text-primary ring-1 ring-primary/10">
+          {hasPhoto ? (
+            <img
+              src={candidate.photoUrl}
+              alt={candidate.name}
+              loading="lazy"
+              onError={() => setPhotoFailed(true)}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            getInitials(candidate.name)
+          )}
+        </div>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-black text-slate-950">{candidate.name}</p>
+          <p className="truncate text-[11px] font-bold uppercase tracking-wide text-slate-500">
+            {candidate.role}
+          </p>
+          {candidate.location ? (
+            <p className="mt-1 truncate text-[11px] font-semibold text-slate-400">{candidate.location}</p>
+          ) : null}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 type PortalTab = 'student' | 'company';
 
@@ -515,6 +555,9 @@ export default function Placement() {
   const [placementPartners, setPlacementPartners] = useState<PlacementPartnerLogo[]>([]);
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [partnersError, setPartnersError] = useState<string | null>(null);
+  const [alumniCandidates, setAlumniCandidates] = useState<AlumniCandidate[]>([]);
+  const [alumniLoading, setAlumniLoading] = useState(true);
+  const [alumniError, setAlumniError] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -549,6 +592,45 @@ export default function Placement() {
     };
 
     loadPlacementPartners();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadAlumniCandidates = async () => {
+      try {
+        setAlumniLoading(true);
+        setAlumniError(null);
+
+        const candidates = await candidateService.listPublic();
+        const alumni = dedupeAlumniCandidates(
+          candidates
+            .filter((candidate) => candidate.full_name?.trim())
+            .map(mapCandidateToAlumni)
+        );
+
+        if (isMounted) {
+          setAlumniCandidates(alumni);
+        }
+      } catch (error) {
+        console.error('Failed to load alumni candidates', error);
+
+        if (isMounted) {
+          setAlumniCandidates([]);
+          setAlumniError('Unable to load alumni network right now.');
+        }
+      } finally {
+        if (isMounted) {
+          setAlumniLoading(false);
+        }
+      }
+    };
+
+    loadAlumniCandidates();
 
     return () => {
       isMounted = false;
@@ -1375,27 +1457,34 @@ export default function Placement() {
             viewport={{ once: true, margin: '-100px' }}
             variants={stagger}
           >
-            {alumni.map(([name, role]) => (
-              <motion.div
-                key={`${name}-${role}`}
-                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm"
-                variants={fadeScale}
-                transition={{ duration: 0.4, ease: easeOutExpo }}
-                whileHover={{ x: 3 }}
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary">
-                  {name
-                    .split(' ')
-                    .map((part) => part[0])
-                    .join('')
-                    .slice(0, 2)}
+            {alumniLoading ? (
+              Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={`alumni-loading-${index}`}
+                  className="h-20 animate-pulse rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-full bg-slate-100" />
+                    <div className="min-w-0 flex-1 space-y-2">
+                      <div className="h-3 w-28 rounded-full bg-slate-100" />
+                      <div className="h-2.5 w-36 rounded-full bg-slate-100" />
+                    </div>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-black text-slate-900">{name}</p>
-                  <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-slate-500">{role}</p>
-                </div>
-              </motion.div>
-            ))}
+              ))
+            ) : alumniError ? (
+              <div className="col-span-full rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-center text-sm font-semibold text-amber-800">
+                {alumniError}
+              </div>
+            ) : alumniCandidates.length === 0 ? (
+              <div className="col-span-full rounded-2xl border border-slate-200 bg-white px-5 py-5 text-center text-sm font-semibold text-slate-600">
+                Approved candidate profiles will appear here as soon as they are added.
+              </div>
+            ) : (
+              alumniCandidates.map((candidate) => (
+                <AlumniCandidateCard key={candidate.id} candidate={candidate} />
+              ))
+            )}
           </motion.div>
         </div>
       </section>
