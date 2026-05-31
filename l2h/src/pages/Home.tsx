@@ -21,80 +21,16 @@ import {
   ChevronRight,
   Home as HomeIcon,
   Infinity as InfinityIcon,
-  RefreshCcw
+  RefreshCcw,
+  Star
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { successStoryVideos } from '@/data/successStoryVideos';
 
-type GooglePlaceDetails = {
-  rating?: number;
-  userRatingCount?: number;
-  googleMapsLinks?: {
-    reviewsURI?: string;
-  };
-  fetchFields: (options: { fields: string[] }) => Promise<unknown>;
-};
-
-type GooglePlacesLibrary = {
-  Place: new (options: { id: string }) => GooglePlaceDetails;
-};
-
-type GoogleMapsGlobal = {
-  maps: {
-    importLibrary: (library: 'places') => Promise<GooglePlacesLibrary>;
-  };
-};
-
-declare global {
-  interface Window {
-    google?: GoogleMapsGlobal;
-    googleMapsPlacesScriptPromise?: Promise<void>;
-  }
-}
-
-type GoogleReviewStatus = 'loading' | 'ready' | 'unconfigured' | 'error';
-
-const googleReviewsFallbackUrl =
+const googleReviewsUrl =
   'https://www.google.com/maps/place//data=!4m4!3m3!1s0x2e0de32368b4fddd:0xc666cd83a706e304!9m1!1b1';
-
-const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim();
-const googlePlaceId = import.meta.env.VITE_GOOGLE_PLACE_ID?.trim();
-
-const loadGoogleMapsPlacesScript = (apiKey: string) => {
-  if (window.google?.maps.importLibrary) {
-    return Promise.resolve();
-  }
-
-  if (window.googleMapsPlacesScriptPromise) {
-    return window.googleMapsPlacesScriptPromise;
-  }
-
-  window.googleMapsPlacesScriptPromise = new Promise<void>((resolve, reject) => {
-    const script = document.createElement('script');
-    const params = new URLSearchParams({
-      key: apiKey,
-      v: 'weekly',
-      libraries: 'places',
-      loading: 'async',
-    });
-
-    script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Unable to load Google Maps Places script.'));
-    document.head.appendChild(script);
-  });
-
-  return window.googleMapsPlacesScriptPromise;
-};
-
-const formatReviewCount = (count?: number | null) =>
-  typeof count === 'number'
-    ? new Intl.NumberFormat('en-IN').format(count)
-    : null;
 
 const Home = () => {
   const navigate = useNavigate();
@@ -111,10 +47,6 @@ const Home = () => {
   
   // Email state for CTA section
   const [email, setEmail] = useState('');
-  const [googleReviewStatus, setGoogleReviewStatus] = useState<GoogleReviewStatus>('loading');
-  const [googleReviewRating, setGoogleReviewRating] = useState<number | null>(null);
-  const [googleReviewCount, setGoogleReviewCount] = useState<number | null>(null);
-  const [googleReviewsUrl, setGoogleReviewsUrl] = useState(googleReviewsFallbackUrl);
   
   const heroSlides = [
     {
@@ -234,46 +166,6 @@ const Home = () => {
   const scrollToIndex = (index: number) => {
     carouselApi?.scrollTo(index);
   };
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadGoogleReviews = async () => {
-      if (!googleMapsApiKey || !googlePlaceId) {
-        if (isMounted) {
-          setGoogleReviewStatus('unconfigured');
-        }
-        return;
-      }
-
-      try {
-        setGoogleReviewStatus('loading');
-        await loadGoogleMapsPlacesScript(googleMapsApiKey);
-        const { Place } = await window.google!.maps.importLibrary('places');
-        const place = new Place({ id: googlePlaceId });
-
-        await place.fetchFields({ fields: ['rating', 'userRatingCount', 'googleMapsLinks'] });
-
-        if (!isMounted) return;
-
-        setGoogleReviewRating(typeof place.rating === 'number' ? place.rating : null);
-        setGoogleReviewCount(typeof place.userRatingCount === 'number' ? place.userRatingCount : null);
-        setGoogleReviewsUrl(place.googleMapsLinks?.reviewsURI || googleReviewsFallbackUrl);
-        setGoogleReviewStatus('ready');
-      } catch (error) {
-        console.error('Failed to load Google reviews', error);
-        if (isMounted) {
-          setGoogleReviewStatus('error');
-        }
-      }
-    };
-
-    loadGoogleReviews();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // Dynamic course categories
   const [courseCategories, setCourseCategories] = useState<string[]>([]);
@@ -436,25 +328,9 @@ const Home = () => {
     // navigate('/courses');
   };
 
-  const googleRatingLabel =
-    googleReviewStatus === 'ready' && typeof googleReviewRating === 'number'
-      ? googleReviewRating.toFixed(1)
-      : googleReviewStatus === 'loading'
-        ? '...'
-        : '--';
-  const googleReviewCountLabel = formatReviewCount(googleReviewCount);
-  const googleStarsFillWidth =
-    typeof googleReviewRating === 'number'
-      ? `${Math.min(Math.max((googleReviewRating / 5) * 100, 0), 100)}%`
-      : '0%';
-  const googleReviewMeta =
-    googleReviewStatus === 'ready' && googleReviewCountLabel
-      ? `(${googleReviewCountLabel})`
-      : googleReviewStatus === 'loading'
-        ? 'Loading live reviews'
-        : googleReviewStatus === 'unconfigured'
-          ? 'Connect Google Places'
-          : 'Reviews unavailable';
+  const googleRatingLabel = '4.5';
+  const googleStarsFillWidth = '90%';
+  const googleReviewMeta = '96 reviews';
 
   return (
     <div className="min-h-screen">
@@ -713,9 +589,6 @@ const Home = () => {
                     </span>
                   </div>
                   <p className="mt-3 text-lg font-black text-slate-950">{googleReviewMeta}</p>
-                  {googleReviewStatus === 'ready' ? (
-                    <p className="mt-1 text-xs font-semibold text-emerald-600">Live from Google</p>
-                  ) : null}
                 </div>
               </div>
 
