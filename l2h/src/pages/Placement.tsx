@@ -50,8 +50,8 @@ const stagger = {
 
 const heroStats = [
   {
-    value: '750+',
-    label: 'Hours of curriculum training',
+    value: '100+',
+    label: 'Hours of Practical Learning',
     icon: GraduationCap,
     tone: 'text-indigo-600 bg-indigo-50',
   },
@@ -301,9 +301,9 @@ const darkMetrics = [
     label: 'Intensive Training + Capstone',
   },
   {
-    value: '750+',
+    value: '100+',
     suffix: 'Hrs',
-    label: 'Developer Curriculum',
+    label: 'Practical Learning',
   },
   {
     value: '500+',
@@ -318,16 +318,14 @@ const darkMetrics = [
 ];
 
 const techOrbit = [
-  { name: 'CSS', mark: '3', angle: -55, radius: 106, color: 'text-sky-200' },
-  { name: 'HTML', mark: '5', angle: 15, radius: 106, color: 'text-orange-200' },
-  { name: 'SQL', mark: 'SQL', angle: 85, radius: 106, color: 'text-sky-100' },
-  { name: 'Python', mark: 'Py', angle: 145, radius: 106, color: 'text-blue-100' },
-  { name: 'Javascript', mark: 'JS', angle: 215, radius: 106, color: 'text-amber-100' },
-  { name: 'Node.js', mark: 'Node', angle: -40, radius: 170, color: 'text-emerald-100' },
-  { name: 'Git', mark: 'Git', angle: 45, radius: 170, color: 'text-orange-100' },
-  { name: 'React', mark: 'Re', angle: 115, radius: 170, color: 'text-cyan-100' },
-  { name: 'Selenium', mark: 'Se', angle: 180, radius: 170, color: 'text-emerald-100' },
-  { name: 'Bootstrap', mark: 'B', angle: -115, radius: 170, color: 'text-violet-100' },
+  { name: 'AI', mark: 'AI', angle: -70, radius: 106, color: 'text-sky-200' },
+  { name: 'Management', mark: 'Mg', angle: 20, radius: 106, color: 'text-orange-200' },
+  { name: 'Soft Skills', mark: 'SS', angle: 110, radius: 106, color: 'text-sky-100' },
+  { name: 'Language', mark: 'Ln', angle: 200, radius: 106, color: 'text-blue-100' },
+  { name: 'Digital Marketing', mark: 'DM', angle: -35, radius: 170, color: 'text-emerald-100' },
+  { name: 'Healing', mark: 'He', angle: 55, radius: 170, color: 'text-amber-100' },
+  { name: 'Mental Health', mark: 'MH', angle: 145, radius: 170, color: 'text-cyan-100' },
+  { name: 'Job Skills', mark: 'Job', angle: 235, radius: 170, color: 'text-violet-100' },
 ];
 
 const roles = [
@@ -853,7 +851,7 @@ export default function Placement() {
               Your Journey from Learning to Earning Starts Here
             </h2>
             <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600 md:text-base">
-              44,200+ careers transformed through our comprehensive placement program. We connect talented students
+              5,000 careers transformed through our comprehensive placement program. We connect talented students
               with leading companies, providing the training, mentorship, and support needed to launch successful
               careers.
             </p>
@@ -890,7 +888,7 @@ export default function Placement() {
               transition={{ duration: 0.45, ease: easeOutExpo }}
               whileHover={{ y: -4 }}
             >
-              <p className="text-5xl font-black tracking-tight">44,200+</p>
+              <p className="text-5xl font-black tracking-tight">5,000</p>
               <p className="mt-2 text-sm font-semibold text-white/80">careers transformed through guided placement support</p>
             </motion.div>
 
@@ -1051,7 +1049,7 @@ export default function Placement() {
               Hiring Partners
             </Badge>
             <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl">
-              <span className="text-red-600">1650+ Companies</span>{' '}
+              <span className="text-red-600">100+ Companies</span>{' '}
               Have Hired L2H Learners
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-600">
@@ -1183,12 +1181,12 @@ export default function Placement() {
               Industry Ready
             </Badge>
             <h2 className="max-w-4xl text-3xl font-black leading-[1.08] tracking-tight md:text-5xl">
-              <span className="block text-[#f3263a]">Hire trained developers</span>
-              <span className="block text-white">who create impact from day 1</span>
+              <span className="block text-[#f3263a]">Hire trained Professionals</span>
+              <span className="block text-white">who start creating impact from Day 1</span>
             </h2>
             <p className="mt-5 max-w-4xl text-sm leading-7 text-slate-200 md:text-base">
-              We recommend the best-fit candidates from our pool of rigorously trained and technically assessed
-              developers.
+              We recommend the best-fit candidates from our pool of rigorously trained and professionally assessed
+              talent.
             </p>
 
             <motion.div className="mt-6 grid max-w-4xl gap-3 sm:grid-cols-2" variants={stagger}>
@@ -1382,10 +1380,10 @@ export default function Placement() {
             eyebrow="Real Stories"
             title={
               <>
-                Hiring partner <span className="text-primary-light">feedback reels</span>
+                What Our Proud Alumni Have to Say
               </>
             }
-            subtitle="Short, social-style feedback cards that echo the reference layout without locking us to external media."
+            subtitle="Short, social-style feedback cards highlighting real career confidence and practical readiness."
           />
 
           <motion.div
@@ -1489,42 +1487,79 @@ export default function Placement() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-primary py-12 text-white lg:py-14">
-        <div className="absolute left-[-8rem] top-[-10rem] h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute bottom-[-9rem] right-[-8rem] h-80 w-80 rounded-full bg-sky-300/20 blur-3xl" />
+      <section className="relative overflow-hidden bg-[#e4f5ff] py-14 text-slate-950 lg:py-20">
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.62)_0%,rgba(255,255,255,0)_45%),linear-gradient(180deg,rgba(14,165,233,0.1)_0%,rgba(255,255,255,0.28)_100%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-sky-200/80" />
 
-        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-white/65">Learning path / guided prep / career launch</p>
-          <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-black tracking-tight md:text-5xl">
-            Start Your Journey Towards a Successful Career
-          </h2>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="max-w-4xl"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            transition={{ duration: 0.55, ease: easeOutExpo }}
+          >
+            <p className="text-xs font-black uppercase tracking-[0.26em] text-sky-700">
+              Learning path / guided prep / career launch
+            </p>
+            <h2 className="mt-4 max-w-4xl text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
+              Start Your Journey Towards a Successful Career
+            </h2>
+          </motion.div>
 
           <motion.div
-            className="mx-auto mt-9 grid max-w-5xl gap-4 md:grid-cols-3"
+            className="mt-11 grid gap-7 lg:grid-cols-3 lg:gap-4"
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-100px' }}
             variants={stagger}
           >
-            {careerJourney.map((item) => (
-              <motion.div
-                key={`cta-${item.title}`}
-                className="rounded-2xl border border-white/10 bg-white/10 p-5 text-left shadow-lg shadow-black/10 backdrop-blur"
-                variants={fadeScale}
-                transition={{ duration: 0.45, ease: easeOutExpo }}
-                whileHover={{ y: -4, backgroundColor: 'rgba(255,255,255,0.14)' }}
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary">
-                  <item.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-4 text-lg font-black">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-white/75">{item.description}</p>
-              </motion.div>
-            ))}
+            {careerJourney.map((item, index) => {
+              const clipPath =
+                index === 0
+                  ? 'polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%, 18px 50%)'
+                  : index === careerJourney.length - 1
+                    ? 'polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 28px 50%)'
+                    : 'polygon(0 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 0 100%, 28px 50%)';
+
+              return (
+                <motion.div
+                  key={`cta-${item.title}`}
+                  className="group"
+                  variants={fadeScale}
+                  transition={{ duration: 0.45, ease: easeOutExpo }}
+                  whileHover={{ y: -5 }}
+                >
+                  <div
+                    className="relative flex h-24 items-center justify-center overflow-hidden border border-sky-200 bg-sky-100/75 shadow-sm shadow-sky-200/70 transition-all duration-300 group-hover:border-sky-300 group-hover:bg-white/85 group-hover:shadow-xl group-hover:shadow-sky-200/80"
+                    style={{ clipPath }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/45 via-transparent to-white/35 opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+                    <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 text-primary shadow-sm ring-1 ring-sky-200 transition-transform duration-300 group-hover:scale-110">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                  </div>
+
+                  <div className="px-5 pt-6 text-left sm:px-6 lg:px-7">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-700">Step 0{index + 1}</p>
+                    <h3 className="mt-2 text-2xl font-black tracking-tight text-slate-950">{item.title}</h3>
+                    <p className="mt-3 max-w-sm text-base leading-7 text-slate-700">{item.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
 
-          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button asChild className="h-12 rounded-xl bg-white px-7 font-black text-primary hover:bg-slate-100">
+          <motion.div
+            className="mt-11 flex flex-col gap-3 sm:flex-row"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            transition={{ duration: 0.55, ease: easeOutExpo }}
+          >
+            <Button asChild className="h-12 rounded-lg bg-sky-600 px-7 font-black text-white shadow-lg shadow-sky-200 hover:bg-sky-700">
               <a href="#placement-portal">
                 Open Placement Portal
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -1533,11 +1568,11 @@ export default function Placement() {
             <Button
               asChild
               variant="outline"
-              className="h-12 rounded-xl border-white/30 bg-transparent px-7 font-black text-white hover:bg-white hover:text-primary"
+              className="h-12 rounded-lg border-sky-600 bg-white/70 px-7 font-black text-sky-700 shadow-sm hover:bg-sky-600 hover:text-white"
             >
               <Link to="/placement/company/register">Company Hiring Support</Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
 

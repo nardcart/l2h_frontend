@@ -28,6 +28,74 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { successStoryVideos } from '@/data/successStoryVideos';
 
+type GooglePlaceDetails = {
+  rating?: number;
+  userRatingCount?: number;
+  googleMapsLinks?: {
+    reviewsURI?: string;
+  };
+  fetchFields: (options: { fields: string[] }) => Promise<unknown>;
+};
+
+type GooglePlacesLibrary = {
+  Place: new (options: { id: string }) => GooglePlaceDetails;
+};
+
+type GoogleMapsGlobal = {
+  maps: {
+    importLibrary: (library: 'places') => Promise<GooglePlacesLibrary>;
+  };
+};
+
+declare global {
+  interface Window {
+    google?: GoogleMapsGlobal;
+    googleMapsPlacesScriptPromise?: Promise<void>;
+  }
+}
+
+type GoogleReviewStatus = 'loading' | 'ready' | 'unconfigured' | 'error';
+
+const googleReviewsFallbackUrl =
+  'https://www.google.com/maps/place//data=!4m4!3m3!1s0x2e0de32368b4fddd:0xc666cd83a706e304!9m1!1b1';
+
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim();
+const googlePlaceId = import.meta.env.VITE_GOOGLE_PLACE_ID?.trim();
+
+const loadGoogleMapsPlacesScript = (apiKey: string) => {
+  if (window.google?.maps.importLibrary) {
+    return Promise.resolve();
+  }
+
+  if (window.googleMapsPlacesScriptPromise) {
+    return window.googleMapsPlacesScriptPromise;
+  }
+
+  window.googleMapsPlacesScriptPromise = new Promise<void>((resolve, reject) => {
+    const script = document.createElement('script');
+    const params = new URLSearchParams({
+      key: apiKey,
+      v: 'weekly',
+      libraries: 'places',
+      loading: 'async',
+    });
+
+    script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Unable to load Google Maps Places script.'));
+    document.head.appendChild(script);
+  });
+
+  return window.googleMapsPlacesScriptPromise;
+};
+
+const formatReviewCount = (count?: number | null) =>
+  typeof count === 'number'
+    ? new Intl.NumberFormat('en-IN').format(count)
+    : null;
+
 const Home = () => {
   const navigate = useNavigate();
   // Carousel API state management
@@ -43,6 +111,10 @@ const Home = () => {
   
   // Email state for CTA section
   const [email, setEmail] = useState('');
+  const [googleReviewStatus, setGoogleReviewStatus] = useState<GoogleReviewStatus>('loading');
+  const [googleReviewRating, setGoogleReviewRating] = useState<number | null>(null);
+  const [googleReviewCount, setGoogleReviewCount] = useState<number | null>(null);
+  const [googleReviewsUrl, setGoogleReviewsUrl] = useState(googleReviewsFallbackUrl);
   
   const heroSlides = [
     {
@@ -118,15 +190,15 @@ const Home = () => {
 
   const heroHighlights = [
     {
-      text: 'Lifetime Access',
+      text: 'Lifetime Access Courses',
       icon: InfinityIcon,
     },
     {
-      text: '14-Day Refund Policy',
+      text: '5-Day Refund Policy',
       icon: RefreshCcw,
     },
     {
-      text: '4.9+ Lakh Enrolled',
+      text: '25+ Ventures started and 400+ people Placed',
       icon: Users,
     },
   ];
@@ -162,6 +234,46 @@ const Home = () => {
   const scrollToIndex = (index: number) => {
     carouselApi?.scrollTo(index);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadGoogleReviews = async () => {
+      if (!googleMapsApiKey || !googlePlaceId) {
+        if (isMounted) {
+          setGoogleReviewStatus('unconfigured');
+        }
+        return;
+      }
+
+      try {
+        setGoogleReviewStatus('loading');
+        await loadGoogleMapsPlacesScript(googleMapsApiKey);
+        const { Place } = await window.google!.maps.importLibrary('places');
+        const place = new Place({ id: googlePlaceId });
+
+        await place.fetchFields({ fields: ['rating', 'userRatingCount', 'googleMapsLinks'] });
+
+        if (!isMounted) return;
+
+        setGoogleReviewRating(typeof place.rating === 'number' ? place.rating : null);
+        setGoogleReviewCount(typeof place.userRatingCount === 'number' ? place.userRatingCount : null);
+        setGoogleReviewsUrl(place.googleMapsLinks?.reviewsURI || googleReviewsFallbackUrl);
+        setGoogleReviewStatus('ready');
+      } catch (error) {
+        console.error('Failed to load Google reviews', error);
+        if (isMounted) {
+          setGoogleReviewStatus('error');
+        }
+      }
+    };
+
+    loadGoogleReviews();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Dynamic course categories
   const [courseCategories, setCourseCategories] = useState<string[]>([]);
@@ -324,8 +436,25 @@ const Home = () => {
     // navigate('/courses');
   };
 
-
-
+  const googleRatingLabel =
+    googleReviewStatus === 'ready' && typeof googleReviewRating === 'number'
+      ? googleReviewRating.toFixed(1)
+      : googleReviewStatus === 'loading'
+        ? '...'
+        : '--';
+  const googleReviewCountLabel = formatReviewCount(googleReviewCount);
+  const googleStarsFillWidth =
+    typeof googleReviewRating === 'number'
+      ? `${Math.min(Math.max((googleReviewRating / 5) * 100, 0), 100)}%`
+      : '0%';
+  const googleReviewMeta =
+    googleReviewStatus === 'ready' && googleReviewCountLabel
+      ? `(${googleReviewCountLabel})`
+      : googleReviewStatus === 'loading'
+        ? 'Loading live reviews'
+        : googleReviewStatus === 'unconfigured'
+          ? 'Connect Google Places'
+          : 'Reviews unavailable';
 
   return (
     <div className="min-h-screen">
@@ -516,13 +645,90 @@ const Home = () => {
               const Icon = item.icon;
 
               return (
-                <div key={item.text} className="flex items-center gap-2.5 whitespace-nowrap">
-                  <Icon className="h-5 w-5 text-blue-600" strokeWidth={2.2} />
-                  <span>{item.text}</span>
+                <div key={item.text} className="flex max-w-full items-center justify-center gap-2.5 text-center sm:whitespace-nowrap">
+                  <Icon className="h-5 w-5 shrink-0 text-blue-600" strokeWidth={2.2} />
+                  <span className="min-w-0 leading-snug">{item.text}</span>
                 </div>
               );
             })}
           </div>
+          <p className="mx-auto mt-4 max-w-3xl text-center text-sm font-semibold italic leading-7 text-slate-700 sm:text-base">
+            &quot;Supporting strength and resilience -
+            <span className="block sm:inline">
+              {' '}Free access for specially challenged individuals, transgenders, and war affected families of Soldiers
+            </span>
+            &quot;
+          </p>
+
+          <motion.div
+            className="mx-auto mt-7 max-w-2xl"
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
+            <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-2xl shadow-slate-200/80">
+              <div className="grid gap-6 px-6 py-7 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:px-10">
+                <div className="text-center">
+                  <div className="inline-flex items-end justify-center" aria-label="Google Reviews">
+                    <span className="text-4xl font-medium leading-none tracking-tight sm:text-5xl">
+                      <span className="text-[#4285F4]">G</span>
+                      <span className="text-[#DB4437]">o</span>
+                      <span className="text-[#F4B400]">o</span>
+                      <span className="text-[#4285F4]">g</span>
+                      <span className="text-[#0F9D58]">l</span>
+                      <span className="text-[#DB4437]">e</span>
+                    </span>
+                    <span className="mb-1 ml-1 text-xs font-semibold text-slate-400">Reviews</span>
+                  </div>
+                  <div className="mt-2 flex justify-center gap-0.5 text-amber-400" aria-hidden="true">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <Star key={`google-brand-star-${index}`} className="h-3.5 w-3.5 fill-current" />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="hidden h-28 w-px bg-sky-200 sm:block" />
+
+                <div className="text-center">
+                  <p className="text-5xl font-black tracking-tight text-slate-950">{googleRatingLabel}</p>
+                  <div
+                    className="relative mx-auto mt-3 flex w-max gap-1 text-slate-200"
+                    aria-label={`${googleRatingLabel} out of 5 stars`}
+                  >
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Star key={`google-empty-star-${index}`} className="h-8 w-8 fill-current" />
+                      ))}
+                    </div>
+                    <span
+                      className="absolute inset-y-0 left-0 overflow-hidden text-amber-400"
+                      style={{ width: googleStarsFillWidth }}
+                    >
+                      <span className="flex w-max gap-1">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Star key={`google-filled-star-${index}`} className="h-8 w-8 fill-current" />
+                        ))}
+                      </span>
+                    </span>
+                  </div>
+                  <p className="mt-3 text-lg font-black text-slate-950">{googleReviewMeta}</p>
+                  {googleReviewStatus === 'ready' ? (
+                    <p className="mt-1 text-xs font-semibold text-emerald-600">Live from Google</p>
+                  ) : null}
+                </div>
+              </div>
+
+              <a
+                href={googleReviewsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="block border-t border-slate-100 px-6 py-4 text-center text-base font-semibold text-blue-600 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
+              >
+                View all reviews
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
