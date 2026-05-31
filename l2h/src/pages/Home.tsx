@@ -822,11 +822,13 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:auto-rows-[140px]">
+          <div className="mx-auto grid max-w-[360px] grid-cols-2 justify-items-center gap-3 sm:max-w-3xl sm:grid-cols-3 md:max-w-5xl md:grid-cols-4 lg:max-w-none lg:grid-cols-4 lg:gap-4 lg:auto-rows-[110px]">
             {successStoryVideos.map((video) => (
               <div
                 key={video.id}
-                className={`${video.featured ? 'lg:col-span-2 lg:row-span-4' : 'lg:row-span-2'} aspect-[9/16] lg:aspect-auto flex items-center justify-center rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-black`}
+                className={`${
+                  video.featured ? 'lg:col-span-2 lg:row-span-3' : 'lg:row-span-2'
+                } aspect-[9/16] h-full max-h-[260px] w-full max-w-[145px] sm:max-h-[320px] sm:max-w-[180px] lg:max-h-none lg:max-w-none lg:aspect-auto flex items-center justify-center overflow-hidden rounded-xl bg-black shadow-md ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:rounded-2xl`}
               >
                 <iframe
                   src={`https://www.youtube.com/embed/${video.id}?rel=0&playsinline=1`}
@@ -834,7 +836,7 @@ const Home = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   loading="lazy"
-                  className="h-full aspect-[9/16] max-w-full border-0"
+                  className="h-full w-full border-0"
                 />
               </div>
             ))}
