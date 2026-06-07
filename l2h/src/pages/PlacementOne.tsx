@@ -13,6 +13,7 @@ import {
   TrendingUp,
   UsersRound,
 } from 'lucide-react';
+import placementHeroImage from '../../images/tBMKO8yMBzmpsx_WZ1g7W.png';
 
 const placementSteps = [
   {
@@ -86,16 +87,11 @@ const PlacementOne = () => {
   return (
     <main className="bg-white text-[#353535]">
       <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0 mx-auto max-w-[1320px] opacity-25">
-          <div className="absolute left-4 top-[-42px] h-[320px] w-[210px] rotate-[-8deg] rounded-b-[90px] bg-sky-200" />
-          <div className="absolute left-[18%] top-[-30px] h-[360px] w-[190px] rounded-t-full bg-neutral-200" />
-          <div className="absolute left-[39%] top-[-18px] h-[350px] w-[230px] rounded-t-full bg-sky-200" />
-          <div className="absolute right-[18%] top-[-24px] h-[340px] w-[190px] rounded-t-full bg-neutral-300" />
-          <div className="absolute right-8 top-[-34px] h-[360px] w-[210px] rotate-[8deg] rounded-b-[90px] bg-neutral-300" />
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[116px] font-black leading-none text-neutral-500">
-            JOB
-          </div>
-        </div>
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-25"
+          style={{ backgroundImage: `url(${placementHeroImage})` }}
+        />
+        <div className="absolute inset-0 bg-white/45" />
 
         <div className="relative mx-auto flex min-h-[390px] max-w-[980px] flex-col justify-center px-6 pb-16 pt-28 sm:px-8 lg:px-0">
           <h1 className="font-serif text-[32px] font-bold leading-tight tracking-normal text-black sm:text-[42px]">
