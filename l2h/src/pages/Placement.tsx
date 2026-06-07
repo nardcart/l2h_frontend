@@ -379,20 +379,19 @@ const partnerVideos = [
 
 const feedbackReels = [
   {
-    company: 'Gemkaps Export Pvt. Ltd.',
-    person: 'Recruiter feedback',
+    company: 'Placement Story 1',
+    person: 'Alumni feedback',
+    embedUrl: 'https://www.youtube.com/embed/IwdFW-F5YDE',
   },
   {
-    company: 'Daydream Soft Infotech',
-    person: 'Talent acquisition',
+    company: 'Placement Story 2',
+    person: 'Alumni feedback',
+    embedUrl: 'https://www.youtube.com/embed/PbTbYH9shmg',
   },
   {
-    company: 'Vivaan Zone',
-    person: 'Founder testimonial',
-  },
-  {
-    company: 'Artious Solution',
-    person: 'Hiring manager',
+    company: 'Placement Story 3',
+    person: 'Alumni feedback',
+    embedUrl: 'https://www.youtube.com/embed/0mHY9uS3U6k',
   },
 ];
 
@@ -717,7 +716,7 @@ export default function Placement() {
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-primary/5 to-transparent" />
 
         <motion.div
-          className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-14 lg:grid-cols-[1.05fr,0.95fr] lg:px-8 lg:py-20"
+          className="relative mx-auto grid max-w-7xl items-start gap-10 px-4 py-10 sm:px-6 sm:py-12 lg:grid-cols-[1.05fr,0.95fr] lg:px-8 lg:pb-16 lg:pt-8"
           initial="hidden"
           animate="show"
           variants={stagger}
@@ -1393,7 +1392,7 @@ export default function Placement() {
             viewport={{ once: true, margin: '-100px' }}
             variants={stagger}
           >
-            {feedbackReels.map((reel) => (
+            {feedbackReels.map((reel, index) => (
               <motion.div
                 key={reel.company}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-colors duration-300 hover:border-primary/20"
@@ -1409,23 +1408,13 @@ export default function Placement() {
                   <span className="text-[11px] font-bold text-primary">View</span>
                 </div>
                 <div className="relative mx-4 mb-4 mt-3 aspect-[9/13] overflow-hidden rounded-xl bg-slate-950">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(59,130,246,0.48),transparent_30%),linear-gradient(160deg,rgba(15,23,42,0.2),rgba(15,23,42,0.98))]" />
-                  <div className="absolute left-3 top-3 rounded-full bg-white px-2 py-1 text-[10px] font-black text-primary">
-                    L2H
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-primary shadow-xl">
-                      <Play className="ml-1 h-6 w-6 fill-current" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white/10 p-3 text-white backdrop-blur">
-                    <div className="flex items-center gap-1 text-amber-300">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <Star key={index} className="h-3 w-3 fill-current" />
-                      ))}
-                    </div>
-                    <p className="mt-2 text-xs font-semibold">Great communication and practical skill readiness.</p>
-                  </div>
+                  <iframe
+                    className="h-full w-full"
+                    src={reel.embedUrl}
+                    title={`Alumni placement story ${index + 1}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
                 </div>
               </motion.div>
             ))}

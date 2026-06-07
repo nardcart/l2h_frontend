@@ -20,6 +20,8 @@ import Partnerships from "./pages/Partnerships";
 import LearnersNetwork from "./pages/LearnersNetwork";
 import AlumniSubmission from "./pages/AlumniSubmission";
 import Placement from "./pages/Placement";
+import PlacementOne from "./pages/PlacementOne";
+import PlacementPolicyViolation from "./pages/PlacementPolicyViolation";
 import CompanyRegistration from "./pages/CompanyRegistration";
 import NotFound from "./pages/NotFound";
 
@@ -97,7 +99,10 @@ const App = () => (
                 <Route path="/partnerships" element={<Partnerships />} />
                 <Route path="/learners-network" element={<LearnersNetwork />} />
                 <Route path="/learners-network/submit" element={<AlumniSubmission />} />
-                <Route path="/placement" element={<Placement />} />
+                <Route path="/placement" element={<PlacementOne />} />
+                <Route path="/placement_1" element={<PlacementOne />} />
+                <Route path="/placement_landing" element={<Placement />} />
+                <Route path="/placement-policy-violation" element={<PlacementPolicyViolation />} />
                 <Route path="/placement/company/registor" element={<CompanyRegistration />} />
                 <Route path="/placement/company/register" element={<CompanyRegistration />} />
                 <Route path="/courses/:category" element={<Courses />} />

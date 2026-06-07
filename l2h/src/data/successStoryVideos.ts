@@ -41,4 +41,16 @@ export const successStoryVideos = [
     id: '7HoMozqwraY',
     title: 'Success Story Short - Skills Transformation',
   },
+  {
+    id: 'IwdFW-F5YDE',
+    title: 'Placement Feedback - Alumni Story',
+  },
+  {
+    id: 'PbTbYH9shmg',
+    title: 'Placement Feedback - Student Journey',
+  },
+  {
+    id: '0mHY9uS3U6k',
+    title: 'Placement Feedback - Career Readiness',
+  },
 ];
