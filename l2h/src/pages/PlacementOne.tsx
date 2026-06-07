@@ -83,6 +83,8 @@ const careerJourney = [
   },
 ];
 
+const placementPolicyUrl = 'https://www.l2h.in/placement-policy-violation';
+
 const PlacementOne = () => {
   return (
     <main className="bg-white text-[#353535]">
@@ -103,17 +105,17 @@ const PlacementOne = () => {
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <Link
-              to="/placement-policy-violation"
+              to="/placement_landing"
               className="inline-flex min-h-10 items-center rounded-[4px] bg-[#0b8fd3] px-4 text-[14px] font-bold text-white shadow-sm transition hover:bg-[#087fbd]"
             >
               View Open Positions
             </Link>
-            <Link
-              to="/placement-policy-violation"
+            <a
+              href={placementPolicyUrl}
               className="inline-flex min-h-10 items-center rounded-[4px] border border-[#0b8fd3] bg-white px-4 text-[14px] font-bold text-[#0b8fd3] transition hover:bg-sky-50"
             >
               Placement Policy for Candidates
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -201,12 +203,12 @@ const PlacementOne = () => {
             >
               Get Started Now
             </Link>
-            <Link
-              to="/placement_landing"
+            <a
+              href={placementPolicyUrl}
               className="inline-flex min-h-10 items-center rounded-[4px] border border-[#0b8fd3] bg-white px-4 text-[14px] font-bold text-[#0b8fd3] transition hover:bg-sky-50"
             >
               Placement Policy for Candidates
-            </Link>
+            </a>
           </div>
         </div>
       </section>
