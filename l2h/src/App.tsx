@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import FloatingContactButton from "./components/FloatingContactButton";
-import GoogleAnalytics from "./components/GoogleAnalytics";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import Blogs from "./pages/Blogs";
@@ -50,7 +49,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <GoogleAnalytics />
         <Routes>
           {/* Admin Login (No Layout) */}
           <Route path="/admin/login" element={<AdminLogin />} />
